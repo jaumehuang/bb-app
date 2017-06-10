@@ -1,0 +1,386 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="keywords" content="简汇,商城,企业管理" />
+		<meta name="description" content="简汇软件创作平台，极速上线，随需而变。" />
+		<meta name="HandheldFriendly" content="True" />
+		<meta name="MobileOptimized" content="320" />
+		<meta name="format-detection" content="telephone=no" />
+		<meta http-equiv="cleartype" content="on" />
+		<meta name="referrer" content="always" />
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link rel="shortcut icon" type="image/x-icon" href="/wshop/static/favicon.ico" />
+		<title>设置</title>
+		<link class="ui" rel="stylesheet" href="../../static/css/min.css" />
+		<link class="ui" rel="stylesheet" href="../../static/css/me.css" />
+		<style type="text/css">
+			.Sponsor select {
+				padding: 11px 0;
+				outline: none;
+				border: none;
+			}
+			
+			.friends {
+				padding: 4px 15px;
+			}
+			
+			.cancel {
+				background: #FF0000;
+				color: #fff;
+			}
+			
+			.pay {
+				background: #3CB371;
+				color: #fff;
+			}
+			
+			.addform .item {
+				margin-top: 14px;
+			}
+			
+			.addform form {
+				padding-left: 10px;
+				padding-right: 10px;
+			}
+			
+			.addtitle {
+				padding: 5px 10px;
+				background: #F0F0F0;
+			}
+			
+			.build .addtitle {
+				padding: 4px 14px;
+				background: #E8E8E8;
+			}
+			
+			.addform .item {
+				margin-top: 10px;
+				border: 1px solid #ddd;
+				padding: 0;
+				border-radius: 4px;
+			}
+			
+			.addform .item>label {
+				text-align: center;
+				margin-bottom: 0;
+				background: #E8E8E8;
+			}
+			
+			.addform .item>label,
+			input,
+			.myarea,
+			select {
+				padding: 8px 2px;
+				border: none;
+				outline: none;
+			}
+			
+			.register .sex>select {
+				border: 1px solid #ddd;
+				padding: 12px 0;
+				border-left: 0;
+			}
+			
+			.addform .item>.myarea {
+				background: #00B5AD;
+				font-weight: bolder;
+				color: #fff;
+				text-align: center;
+			}
+			
+			.addform .item>input {
+				border-radius: 4px;
+			}
+			
+			.addform .item .area {
+				background: #21BA45;
+				color: #fff;
+				text-align: center;
+				border-top-right-radius: 4px;
+				border-bottom-right-radius: 4px;
+			}
+			.seting{
+				padding:10px;
+			}
+			 .Sponsor-popup .pay-money>.message{
+			 	padding:10px;
+			 }
+		</style>
+	</head>
+
+	<body>
+		<div id="wrapper" style="display:block" class="current">
+			<div class="content seting Sponsor  container-fluid">
+				<!-- 个人设置 -->
+				<div class="user-set">
+					<div class="head-title">
+						<i class="fa fa-user"></i>
+						<span th:text="${userInfo.nickName}">xxx公司</span>
+					</div>
+					<form>
+						<div class="row">
+							<label class="col-xs-3 itb">昵称</label>
+							<input type="text" name="" class="col-xs-9 itb" th:value="${userInfo.nickName}">
+						</div>
+						<div class="row">
+							<label class="col-xs-3 itb">昵称</label>
+							<select name="" class="col-xs-9 itb">
+								<option th:selected="${userInfo.gender == 'SECURITY'}" value="SECURITY">保密</option>
+								<option th:selected="${userInfo.gender == 'MALE'}" value="MALE">男</option>
+								<option th:selected="${userInfo.gender == 'FEMALE'}" value="FEMALE">女</option>
+							</select>
+						</div>
+						<div class="row addrees">
+							<div class=" head-title" th:style="${defaultAddr==null ?'display:none' : ''}"><i class="fa fa-truck"></i>收货地址</div>
+							<div class="ui grid compact" id="addr_container" th:style="${defaultAddr==null ?'display:none' : ''}">
+								<div class="user-zi row">
+									<div class="col-xs-6"><i class="fa fa-user"></i>
+										<span id="orderAddrName" th:text="${defaultAddr==null?'':defaultAddr.name}">小李飞刀</span>
+									</div>
+									<div class="col-xs-6"><i class="fa fa-phone "></i>
+										<span id="orderAddrPhone" th:text="${defaultAddr==null?'':defaultAddr.phone}">13143517383</span>
+									</div>
+								</div>
+								<div class=" show-address"><i class="fa fa-paper-plane-o"></i>
+									<span id="orderAddrDetail" th:text="${defaultAddr==null?'': (defaultAddr.province.text+defaultAddr.city.text+defaultAddr.town.text+'  '+defaultAddr.detail)}">xxx</span>
+								</div>
+								<div class=" add-address btn-lg btn-add" id="addr_add_container" th:style="${defaultAddr==null ?'' : 'display:none'}">
+									增加收货地址
+								</div>
+							</div>
+						</div>
+					</form>
+					<!--  安全设置 -->
+					<div class="safety">
+						<div class=" head-title">
+							<i class="fa fa-shield"></i>
+							<span>账户安全</span>
+						</div>
+						<form>
+							<div class="row">
+								<label class="col-xs-3 itb">手机绑定</label>
+								<div class="col-xs-9 itb" id="phone_button" th:text="${(userInfo.phone == null || userInfo.phone=='null'? '' : userInfo.phone)+(userInfo.validated?' 已绑定':' 未绑定')}">1212121212</div>
+							</div>
+							<div class="row">
+								<label class="col-xs-3 itb">支付密码</label>
+								<div class="col-xs-9 itb" id="pay_password_button" th:text="${userInfo.certified?'修改':'启用'}">开</div>
+							</div>
+						</form>
+					</div>
+					<!--  安全设置 -->
+				</div>
+				<!-- 个人设置 -->
+			</div>
+			<!-- 底部菜单 -->
+			<div class="footer">
+				<nav class="nav-justified btn-group-justified">
+					<a th:href="@{/mshop/index}" href="../index.html" class="afc-default btn">
+						<div class="show-nav"><i class="fa fa-home"></i></div>
+						<div class="show-p">首页</div>
+					</a>
+					<a th:href="@{/mshop/goods/category}" href="../goods/category.html" class="btn afc-default ">
+						<div class="show-nav"><i class="fa fa-bars"></i></div>
+						<div class="show-p">分类</div>
+					</a>
+					<a th:href="@{/mshop/cart/list}" href="../cart.html" class="btn afc-default">
+						<div class="show-nav"><i class="fa fa-shopping-cart"></i></div>
+						<div class="show-p">购物车</div>
+					</a>
+					<a th:href="@{/mshop/user/home}" href="../user/home.html" class="btn afc-active">
+						<div class="show-nav"><i class="fa fa-user-o "></i></div>
+						<div class="show-p">我</div>
+					</a>
+				</nav>
+			</div>
+		</div>
+		<!-- 弹窗 -->
+		<div class="Sponsor-popup popup" style="display:none;">
+			<div class="friends">手机绑定</div>
+			<form class="col-xs-12 pay-money">
+				<div class="col-xs-12">
+					<label class="col-xs-4 itb">手机号码</label>
+					<input type="text" name="" placeholder="请输入你的手机号码" class="col-xs-8 itb">
+				</div>
+				<div class="col-xs-12 message">
+					<div class="col-xs-12">发送短信验证码</div>
+				</div>
+				<div class="col-xs-12">
+					<label class="col-xs-4 itb">验证码</label>
+					<input type="text" name="" placeholder="三分钟内有效" class="col-xs-8 itb">
+				</div>
+			</form>
+			<div class="row operation">
+				<div class="col-xs-6">
+					<div class="btn cancel">取消</div>
+				</div>
+				<div class="col-xs-6">
+					<div class="btn pay pull-right">确定</div>
+				</div>
+			</div>
+		</div>
+		<!--/*新增地址页签:start*/-->
+		<div id="" style="display:none" class="content swiper-container addform">
+			<div class="addtitle"><i class="fa fa-pencil"></i>新增地址</div>
+			<form>
+				<div class="row item">
+					<label class="col-xs-3">姓名</label>
+					<input type="text" id="new_addr_name" name="name" class="col-xs-9" placeholder="收货姓名">
+				</div>
+				<div class="row item">
+					<label class="col-xs-3">电话</label>
+					<input type="text" id="new_addr_phone" name="phone" class="col-xs-9" placeholder="收货电话">
+				</div>
+				<div class="row item">
+					<label class="col-xs-3">区域</label>
+					<ul id="domain" id='addr_picker' style="display:none;">
+						<li data-val="广东省">广东省
+							<ul>
+								<li data-val="广州市">广州市
+									<ul>
+										<li data-val="白云区">白云区</li>
+										<li data-val="天河区">天河区</li>
+										<li data-val="黄浦区">黄浦区</li>
+									</ul>
+								</li>
+
+								<li data-val="深圳市">深圳市
+									<ul>
+										<li data-val="罗湖区">罗湖区</li>
+										<li data-val="云冈区">云冈区</li>
+									</ul>
+								</li>
+							</ul>
+						</li>
+						<li data-val="广西壮族自治区">广西壮族自治区
+							<ul>
+								<li data-val="南宁">南宁
+									<ul>
+										<li data-val="嘻嘻嘻">嘻嘻嘻</li>
+										<li data-val="嘻嘻嘻">嘻嘻嘻</li>
+										<li data-val="嘻嘻嘻">嘻嘻嘻</li>
+									</ul>
+								</li>
+								<li data-val="桂林">桂林
+									<ul>
+										<li data-val="燕塘区">燕塘区</li>
+									</ul>
+								</li>
+
+							</ul>
+						</li>
+					</ul>
+				</div>
+				<div class="row item">
+					<label class="col-xs-3">地址</label>
+					<input type="text" class="col-xs-9" id="new_addr_detail" name="detail" placeholder="街道和门牌号码">
+				</div>
+				<div class="row item">
+					<label class="col-xs-3">设为默认</label>
+					<select type="text" id="default_add" name="defaulted" class="col-xs-9">
+						<option value="FALSE">否</option>
+						<option value="TRUE">是</option>
+					</select>
+				</div>
+			</form>
+
+			<input type="hidden" id="new_province_id" />
+			<input type="hidden" id="new_city_id" />
+			<input type="hidden" id="new_town_id" />
+			<!--底部菜单-->
+			<div class="footer">
+				<nav class="nav-justified btn-group-justified">
+					<a class="btn" href="#">
+						<button class="btn cancel" data-tab="order">取消</button>
+					</a>
+					<a class="btn" href="#">
+						<button class="btn btnsave" id="checkoutButton" id="save_new_addr_btn">保存</button>
+					</a>
+				</nav>
+			</div>
+		</div>
+		<!--/*新增地址页签:end*/-->
+
+		<input type="hidden" id="phone_validated" th:value="${userInfo.phone != null && userInfo.phone!='null' && userInfo.validated}" />
+
+		<!--		<script type="text/javascript" src="/wshop/static/js/jquery.min.js"></script>-->
+		<script type="text/javascript" src="../../static/js/min.js"></script>
+		<!--/*日期拾取*/-->
+		<!--<script type="text/javascript" src="/wshop/static/js/mui.min.js"></script>
+		<script type="text/javascript" src="/wshop/static/js/mui.picker.min.js"></script>
+		<script type="text/javascript" src="/wshop/static/js/mui.dtpicker.min.js"></script>
+		<script type="text/javascript" src="/wshop/static/js/mui.poppicker.min.js"></script>
+		<script type="text/javascript" src="/wshop/static/js/view/order.addr.js"></script>
+		<script type="text/javascript" src="/wshop/static/js/view/user.setting.js"></script>
+
+		<script type="text/javascript" th:src="@{/webjars/crypto-js/3.1.5/core.js}"></script>
+		<script type="text/javascript" th:src="@{/webjars/crypto-js/3.1.5/sha1.js}"></script>
+		<script type="text/javascript" src="/wshop/static/js/view/user.setting.js"></script>
+		<script type="text/javascript" src="/wshop/static/js/knockout-min.js"></script>
+		<script type="text/javascript" src="/wshop/static/js/jweixin-1.0.0.js"></script>-->
+
+		<script type="text/javascript">
+			//			$('.menu .item').tab();
+			//
+			//			$('.ui.dropdown').dropdown();
+			var $phone_button = $("#phone_button");
+			var out_isbtn = $(".popup .cancel"); //退出弹窗按钮
+			var btn_pop = $(".popup .pay"); //保存弹窗数据
+			var $addbtn = $(".add-address"); //增加地址按钮
+			var $btnsave = $(".btnsave"); //保存按钮
+			var $cancel = $(".footer .cancel"); //取消按钮
+
+			var $popup = $(".popup"); //弹窗页面
+			var $current = $(".current"); //当前页面
+			var $addform = $(".addform"); //增加地址页面
+			//弹窗
+			$phone_button.on("click", function() {
+				$(".popup").show();
+				$current.hide();
+				$('body').css("background", "#000");
+			});
+			//退出弹窗
+			out_isbtn.on("click", function() {
+				$(".popup").hide();
+				$('body').css("background", "#fff");
+				$current.show();
+			})
+			btn_pop.on("click", function() {
+				$(".popup").hide();
+				$('body').css("background", "#fff");
+				$current.show();
+			})
+			//新增收货地址
+			$addbtn.on("click", function() {
+				$current.hide();
+				$addform.show();
+			});
+			// 保存地址,跳转到当前页面
+			$btnsave.on("click", function() {
+				$current.show();
+				$addform.hide();
+				$choose.hide();
+
+			});
+			$cancel.on("click", function() {
+				$current.show();
+				$addform.hide();
+				$choose.hide();
+			})
+
+			$(function() {
+				//选择区域
+				$('#domain').mobiscroll().treelist({
+					theme: 'ios',
+					lang: 'zh',
+					display: 'bottom',
+					width: [120, 100, 116],
+					placeholder: '输入省市区',
+					labels: ['Region', 'Supervisor', 'Tech']
+				});
+			});
+		</script>
+	</body>
+
+</html>

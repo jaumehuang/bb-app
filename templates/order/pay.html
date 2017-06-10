@@ -1,0 +1,587 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="keywords" content="简汇,商城,企业管理" />
+		<meta name="description" content="简汇软件创作平台，极速上线，随需而变。" />
+		<meta name="HandheldFriendly" content="True" />
+		<meta name="MobileOptimized" content="320" />
+		<meta name="format-detection" content="telephone=no" />
+		<meta http-equiv="cleartype" content="on" />
+		<meta name="referrer" content="always" />
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link rel="shortcut icon" type="image/x-icon" href="/mshop/static/favicon.ico" />
+		<title>订单支付</title>
+		<link class="ui" rel="stylesheet" href="../../static/css/min.css" />
+		<link class="ui" rel="stylesheet" href="../../static/css/me.css" />
+		<style type="text/css">
+			.popup {
+				margin-top: 100px;
+				padding: 10px;
+			}
+			
+			.isbtn>div {
+				padding-bottom: 8px;
+				padding-top: 8px;
+			}
+						#wrapper,.popup{
+				padding: 10px 8px;
+			}
+
+			.line {
+				border-bottom: 1px solid #ddd;
+				height: 10px;
+			}
+			
+			.top-title {
+				padding-top: 10px;
+			}
+			
+			#addr_container {
+				margin-top: 8px;
+				border: 1px solid #ddd;
+				border-radius: 4px;
+			}
+			
+			.next-go {
+				line-height: 50px;
+			}
+			
+			.build .goods-list .show-img {
+				padding: 0;
+			}
+			
+			.build .goods-list li {
+				height: 92px;
+				list-style: none;
+				padding: 0;
+			}
+			
+			.build .goods-list .show-price {
+				padding: 0;
+				color: #FF0000;
+			}
+			
+			.build .goods-list .number {
+				color: #21BA45;
+			}
+			
+			.build .goods-list img {
+				display: block;
+				padding: 8px;
+				padding-top: 4px;
+				width: 100%;
+				height: 100%;
+			}
+			
+			.build .goods-list .item {
+				height: 92px;
+			}
+			
+			#wrapper .bottom-price {
+				padding: 10px 2px;
+				border: 1px solid #008B00;
+				border-radius: 4px;
+			}
+			
+			.top-list .item {
+				text-align: center;
+			}
+			
+			.top-list .item>div {
+				padding: 5px 0;
+			}
+			
+			.commlist {
+				padding-bottom: 16px;
+				margin-top: 10px;
+			}
+			
+			.addform .item {
+				margin-top: 14px;
+			}
+			
+			.addform form {
+				padding-left: 10px;
+				padding-right: 10px;
+			}
+			
+			.addtitle {
+				padding: 5px 10px;
+				background: #F0F0F0;
+			}
+			
+			.build .addtitle {
+				padding: 4px 14px;
+				background: #E8E8E8;
+			}
+			
+			.addform .item {
+				margin-top: 10px;
+				border: 1px solid #ddd;
+				padding: 0;
+				border-radius: 4px;
+			}
+			
+			.addform .item>label {
+				text-align: center;
+				margin-bottom: 0;
+				background: #E8E8E8;
+			}
+			
+			.addform .item>label,
+			input,
+			.myarea,
+			select {
+				padding: 8px 2px;
+				border: none;
+				outline: none;
+			}
+			
+			.register .sex>select {
+				border: 1px solid #ddd;
+				padding: 12px 0;
+				border-left: 0;
+			}
+			
+			.addform .item>.myarea {
+				background: #00B5AD;
+				font-weight: bolder;
+				color: #fff;
+				text-align: center;
+			}
+			
+			.addform .item>input {
+				border-radius: 4px;
+			}
+			
+			.addform .item .area {
+				background: #21BA45;
+				color: #fff;
+				text-align: center;
+				border-top-right-radius: 4px;
+				border-bottom-right-radius: 4px;
+			}
+			
+			#domain_dummy {
+				text-indent: 15px;
+			}
+			
+			.choose .aligned {
+				padding: 10px;
+			}
+			
+			.choose ul>li {
+				border-bottom: 1px solid #ddd;
+			}
+			
+			.choose .pull-right {
+				margin-right: 10px;
+			}
+			
+			.pull-left {
+				margin-top: 7px;
+			}
+			
+			.pull-left input[type=checkbox] {
+				height: 22px;
+				width: 22px;
+				vertical-align: middle;
+				margin-top: -2px;
+			}
+			
+			#wrapper .account{
+				padding: 0;
+				padding-left: 11px;
+				font-size: 16px;
+			}
+			
+			.fa-gift {
+				color: #EE3B3B;
+			}
+			.show-img{
+				padding:0;
+			}
+			.show-img img{
+				display:block;
+				height:100%;
+				width:100%;
+			}
+		</style>
+	</head>
+
+	<body>
+		<!--支付弹窗--> 
+		<div class="popup payment-cp container-fluid" style="display:none">
+			<div class="row head-title ">
+				余额支付
+			</div>
+			<div class="row coupon ">
+				<div class="row you">
+					<div class="col-xs-12" id="acctPayTotalText" th:text="${'您当前需要支付的金额为 ￥' + #numbers.formatDecimal(order.total,1,2)+''}">￥1200</div>
+				</div>
+				<input type="hidden" id="acctBal*(-1)" th:value="${#numbers.formatDecimal(acctBal*(-1),1,2)}" />
+				<input type="hidden" id="certified" th:value="${certified}" />
+				<div class="row password" th:if="${certified}">
+					<span class="col-xs-3">支付密码</span>
+					<input type="password" id="acctPasswordInput" class="col-xs-9" placeholder="请输入你的支付密码">
+				</div>
+				<!--/*余额不足的提示*/-->
+				<div class="ui message">
+					<span id="acctPayTotalText" th:text="${acctBal*(-1)<order.total?'很抱歉，您当前的余额 ￥' + #numbers.formatDecimal((acctBal==null || acctBal==0) ? 0 : (acctBal*(-1)),1,2)+'不足以支付':'您当前的钱包余额 ￥' + #numbers.formatDecimal(acctBal*(-1),1,2)+'可以支付'}">余额不足</span>
+				</div>
+			</div>
+			<div class="row isbtn">
+				<div class="col-xs-3 cancel">取消</div>
+				<div class="col-xs-3 btnsave" id="acctPayButton" th:class="${acctBal*(-1)>=order.total ? 'ui positive button':'ui positive button disabled'}">确定</div>
+			</div>
+		</div>
+		<!--新增收货地址-->
+		<div id="wrapper" class="current" style="display:block">
+			<!--新增收货地址-->
+			<button type="button" class="btn btn-success btn-lg btn-block addrees" id="addr_add_container" th:style="${defaultAddr==null ?'' : 'display:none'}">新增收货地址</button>
+			<!--默认地址-->
+			<div class="default row" id="addr_container" th:style="${defaultAddr==null ?'display:none' : ''}">
+				<div class="col-xs-10 row">
+					<div class="col-xs-6 user account" id="orderAddrName" th:text="${defaultAddr==null?'':defaultAddr.name}">
+						<i class="fa fa-user"></i>小皮虾
+					</div>
+					<div class="col-xs-6 user-phone account" id="orderAddrPhone" th:text="${defaultAddr==null?'':defaultAddr.phone}">
+						<i class="fa fa-phone"></i> 1310612222
+					</div>
+					<div class="getaddress row">
+						<i class="fa fa-paper-plane-o"></i>
+						<span id="orderAddrDetail" th:text="${defaultAddr==null?'': (defaultAddr.province.text+defaultAddr.city.text+defaultAddr.town.text+'  '+defaultAddr.detail)}">广东on广东on</span>
+					</div>
+				</div>
+				<div class="col-xs-2 next-go text-center" id="bpnode_button" data-tab="bpnode_list"><i class="fa fa-angle-right"></i></div>
+			</div>
+
+			<div class="commlist">
+				<div class="top-list row">
+					<div class="col-xs-3 item">
+						<div>商品</div>
+						<div th:text="${#numbers.formatDecimal(order.total,1,2)}" class="text-success">23323</div>
+					</div>
+					<div class="col-xs-3 item">
+						<div>运费</div>
+						<div th:text="${#numbers.formatDecimal(order.freight,1,2)}" class="text-success">2333</div>
+					</div>
+
+					<div class="col-xs-3 item discount ">
+						<div>优惠</div>
+						<div class="num" style="color:#FF0000" id="discountText" th:text="${'-'+#numbers.formatDecimal(order.discount,1,2)}">-0.00</div>
+					</div>
+					
+				</div>
+				<div class="bottom-price row text-center" id="totalText" th:text="${'总共'+order.itemTotal+'件/'+order.itemCount+'种商品，实付￥'+#numbers.formatDecimal(order.total,1,2)+'。'}">总共12件商品2000元</div>
+				<input type="hidden" id="freight" th:value="${#numbers.formatDecimal(order.freight,1,2)}">
+				<input type="hidden" id="net" th:value="${#numbers.formatDecimal(order.net,1,2)}">
+				<input type="hidden" id="itemTotal" th:value="${order.itemTotal}">
+				<input type="hidden" id="itemCount" th:value="${order.itemCount}">
+				<input type="hidden" id="orderTotal" th:value="${#numbers.formatDecimal(order.total,1,2)}">
+			</div>
+
+			<input type="hidden" id="freight" th:value="${#numbers.formatDecimal(order.freight,1,2)}">
+			<input type="hidden" id="net" th:value="${#numbers.formatDecimal(order.net,1,2)}">
+			<input type="hidden" id="itemTotal" th:value="${order.itemTotal}">
+			<input type="hidden" id="itemCount" th:value="${order.itemCount}">
+			<input type="hidden" id="orderTotal" th:value="${#numbers.formatDecimal(order.total,1,2)}">
+			<input type="hidden" id="orderId" th:value="${order.id}">
+			<input id="couponId" name="couponId" type="hidden">
+			<!--/*商品清单*/-->
+			<form action="" id="orderForm">
+				<div class="detailedlist panel panel-default">
+					<div class="panel-heading">
+						<i class="fa fa-shopping-cart"></i> 商品清单
+					</div>
+					<ul class="goods-list" th:each="item:${order.items}">
+						<li class="good-shop row">
+							<div class="col-xs-5 show-img item" th:href="${'/mshop/goods/info/'+item.catalog}" href="/mshop/templates/goods/iteminfo.html">
+								<img th:src="${item.itemImgUrl}" src="../../static/images/ad1.jpg">
+							</div>
+							<div class="col-xs-7 item">
+								<div class="show-title" th:text="${item.itemName}">商品标题</div>
+								<div class="show-price"><span th:text="${'￥' + #numbers.formatDecimal(item.price,1,2)}">120</span></div>
+								<div class="number" th:text="${#numbers.formatDecimal(item.qty,1,0) + '&nbsp;件'}">5件</div>
+							</div>
+							<input type="hidden" th:name="${'items['+itemStat.index+'].itemId'}" th:value="${item.itemId}" />
+							<input type="hidden" th:name="${'items['+itemStat.index+'].catalog'}" th:value="${item.catalog}" />
+							<input type="hidden" th:name="${'items['+itemStat.index+'].qty'}" th:value="${item.qty}" />
+						</li>
+						
+					</ul>
+				</div>
+			</form>
+			<!--/*留言*/-->
+			<div class="row top-title">
+				<div class="col-xs-4 line">
+				</div>
+				<div class="col-xs-4 text-center" th:text="${list.title}">留言</div>
+				<div class="col-xs-4 line">
+				</div>
+			</div>
+			<!--/*留言*/-->
+			<form role="form">
+				<div class="form-group">
+					<textarea class="form-control" rows="2" placeholder="写下购买体会和使用感受来帮助其他的小伙伴哦~"></textarea>
+				</div>
+			</form>
+			<!--底部菜单-->
+			<div class="footer cart-foot">
+				
+				<nav class="nav-justified btn-group-justified">
+					<a class="btn" id="cancleOrderButton">
+						<button class="btn" th:class="${acctBal*(-1)>=order.total ? 'ui green button' : 'ui red button '}" id="balancePayButton" th:text="${acctBal*(-1)>=order.total?'余额支付':'余额不足'}">余额支付</button>
+					</a>
+					<a class="btn" href="javascript:">
+						<button class="btn" iid="weixinPayButton">在线支付</button>
+					</a>
+				</nav>
+			</div>
+		</div>
+
+		<!--/*新增地址页签:start*/-->
+		<div id="" style="display:none" class="content swiper-container addform">
+			<div class="addtitle"><i class="fa fa-pencil"></i>新增地址</div>
+			<form>
+				<div class="row item">
+					<label class="col-xs-3">姓名</label>
+					<input type="text" id="new_addr_name" name="name" class="col-xs-9" placeholder="收货姓名">
+				</div>
+				<div class="row item">
+					<label class="col-xs-3">电话</label>
+					<input type="text" id="new_addr_phone" name="phone" class="col-xs-9" placeholder="收货电话">
+				</div>
+				<div class="row item">
+					<label class="col-xs-3">区域</label>
+					<ul id="domain" id='addr_picker' style="display:none;">
+						<li data-val="广东省">广东省
+							<ul>
+								<li data-val="广州市">广州市
+									<ul>
+										<li data-val="白云区">白云区</li>
+										<li data-val="天河区">天河区</li>
+										<li data-val="黄浦区">黄浦区</li>
+									</ul>
+								</li>
+
+								<li data-val="深圳市">深圳市
+									<ul>
+										<li data-val="罗湖区">罗湖区</li>
+										<li data-val="云冈区">云冈区</li>
+									</ul>
+								</li>
+							</ul>
+						</li>
+						<li data-val="广西壮族自治区">广西壮族自治区
+							<ul>
+								<li data-val="南宁">南宁
+									<ul>
+										<li data-val="嘻嘻嘻">嘻嘻嘻</li>
+										<li data-val="嘻嘻嘻">嘻嘻嘻</li>
+										<li data-val="嘻嘻嘻">嘻嘻嘻</li>
+									</ul>
+								</li>
+								<li data-val="桂林">桂林
+									<ul>
+										<li data-val="燕塘区">燕塘区</li>
+									</ul>
+								</li>
+
+							</ul>
+						</li>
+					</ul>
+				</div>
+				<div class="row item">
+					<label class="col-xs-3">地址</label>
+					<input type="text" class="col-xs-9" id="new_addr_detail" name="detail" placeholder="街道和门牌号码">
+				</div>
+				<div class="row item">
+					<label class="col-xs-3">设为默认</label>
+					<select type="text" id="default_add" name="defaulted" class="col-xs-9">
+						<option value="FALSE">否</option>
+						<option value="TRUE">是</option>
+					</select>
+				</div>
+			</form>
+
+			<input type="hidden" id="new_province_id" />
+			<input type="hidden" id="new_city_id" />
+			<input type="hidden" id="new_town_id" />
+			<!--底部菜单-->
+			<div class="footer">
+				<nav class="nav-justified btn-group-justified">
+					<a class="btn" href="#">
+						<button class="btn cancel" data-tab="order">取消</button>
+					</a>
+					<a class="btn" href="#">
+						<button class="btn btnsave" id="checkoutButton" id="save_new_addr_btn">保存</button>
+					</a>
+				</nav>
+			</div>
+		</div>
+		<!--/*新增地址页签:end*/-->
+		<!--/*地址管理*/-->
+		<div id="wrapper" style="display:none;" class="choose">
+			<div class="content swiper-container build">
+				<!-- 新增收货地址 -->
+				<div class="addtitle text-center ">选择收货地址 </div>
+				<ul id="addr_list" data-bind="foreach: {data: datas}">
+					<li class="row" data-bind="attr:{id : id}" onclick="useAddr(event)">
+						<div class="row default">
+							<div class="col-xs-6 user"><i class="fa fa-user" data-bind="text:name"></i>小皮虾</div>
+							<div class="col-xs-6 phone"><i class="fa fa-phone" data-bind="text:phone"></i>1310612222</div>
+							<div class="getaddress row"><i class="fa fa-paper-plane-o"></i>
+								<span data-bind="text: province.text + city.text + town.text+'  '+ detail">广东on广东on</span>
+							</div>
+						</div>
+						<!--/*编辑,选择地址*/-->
+						<div class="row two wide column  middle aligned">
+							<div class=" ui icon  basic pull-left" data-bind="attr:{id : id}" onclick="editAddr(event)">
+								<input type="checkbox" name="" id="" value="" /> 默认地址
+							</div>
+							<div class=" ui icon  basic pull-right" data-bind="attr:{id : id}" onclick="editAddr(event)">
+								<button type="button" class="btn btn-default">删除</button>
+							</div>
+							<div class=" ui icon  basic pull-right" data-bind="attr:{id : id}" onclick="editAddr(event)">
+								<button type="button" class="btn btn-default editbtn">编辑</button>
+							</div>
+						</div>
+					</li>
+				</ul>
+			</div>
+			<!--底部菜单-->
+			<div class="footer">
+				<nav class="nav-justified btn-group-justified">
+					<a class="btn" href="#">
+						<button class="btn cancel" data-tab="order">取消</button>
+					</a>
+					<a class="btn" href="#">
+						<button class="btn add-address" id="checkoutButton" id="create_addr_btn">新增地址</button>
+					</a>
+				</nav>
+			</div>
+		</div>
+		<!--<script type="text/javascript" src="/wshop/static/js/jquery.min.js"></script>
+		<script type="text/javascript" src="/wshop/static/js/min.js"></script>
+		<script type="text/javascript" src="/wshop/static/js/view/order.addr.js"></script>
+		<script type="text/javascript" src="/wshop/static/js/view/order.build.js"></script>
+		<script type="text/javascript" src="/wshop/static/js/mui.min.js"></script>
+		<script type="text/javascript" src="/wshop/static/js/mui.picker.min.js"></script>
+		<script type="text/javascript" src="/wshop/static/js/mui.poppicker.min.js"></script>
+
+		<script type="text/javascript" src="/wshop/static/js/jweixin-1.0.0.js"></script>
+
+		<script type="text/javascript" th:src="@{/webjars/crypto-js/3.1.5/core.js}"></script>
+		<script type="text/javascript" th:src="@{/webjars/crypto-js/3.1.5/sha1.js}"></script>
+		<script type="text/javascript" src="/wshop/static/js/knockout-min.js"></script>-->
+		<script type="text/javascript" src="../../static/js/min.js"></script>
+
+		<script type="text/javascript">
+			$('.menu .item').tab();
+			//优惠券选择
+			$('.ui.dropdown').dropdown();
+
+			$('#coupon_button').on('click', function() {
+				$('#coupon_modal').modal({
+					closable: false, //在点击按钮前不准关闭
+				}).modal('show');
+			});
+
+			//余额支付
+			$('#balancePayButton').on('click', function() {
+				$('#balance_modal').modal({
+					closable: false, //在点击按钮前不准关闭
+
+				}).modal('show');
+			});
+
+			//邀请赞助
+			$('#friends_button').on('click', function() {
+				$('#friends_modal').modal({
+					closable: false, //在点击按钮前不准关闭
+
+				}).modal('show');
+			});
+			$(function() {
+				var $balance= $("#cancleOrderButton");//余额按钮
+				var out_isbtn = $(".popup .isbtn .cancel");//退出弹窗按钮
+				var $addbtn = $(".addrees");//增加地址按钮
+				var $btnsave = $(".btnsave");//保存按钮
+				var $cancel=$(".cancel");//取消按钮
+				var $nextgo=$(".next-go");//进入选择页面按钮
+				var $editbtn=$(".editbtn");//编辑按钮
+				var $add_address=$(".add-address");//新增地址按钮
+				
+				var $popup=$(".popup");//弹窗页面
+				var $current=$(".current");//当前页面
+				var $addform=$(".addform");//增加地址页面
+				var $choose=$(".choose");//选择地址页面
+				
+				//弹窗
+				$balance.on("click", function() {
+					$(".popup").show();
+					$current.hide();
+					$('body').css("background", "#000");
+				});
+				//退出弹窗
+				out_isbtn.on("click", function() {
+					$(".popup").hide();
+					$('body').css("background", "#fff");
+					$current.show();
+				})
+				//新增收货地址
+				$addbtn.on("click", function() {
+					$current.hide();
+					$addform.show();
+				});
+				// 保存地址,跳转到当前页面
+				$btnsave.on("click", function() {
+					$current.show();
+					$addform.hide();
+					$choose.hide();
+					$popup.hide();
+					$('body').css("background", "#fff");
+					
+				});
+				//编辑页面
+				$editbtn.on("click",function(){
+					$addform.show();
+					$choose.hide();
+				})
+				//增加选择地址
+				$add_address.on("click",function(){
+					$choose.hide();
+					$addform.show();
+				})
+				
+				$cancel.on("click", function() {
+					$current.show();
+					$addform.hide();
+					$choose.hide();
+				})
+				//选择收货地址
+				$nextgo.on("click", function() {
+					$current.hide();
+					$choose.show();
+				});
+				
+			})
+			$(function() {
+				//选择区域
+				$('#domain').mobiscroll().treelist({
+					theme: 'ios',
+					lang: 'zh',
+					display: 'bottom',
+					width: [120, 100, 116],
+					placeholder: '输入省市区',
+					labels: ['Region', 'Supervisor', 'Tech']
+				});
+			});
+		</script>
+		</script>
+	</body>
+
+</html>

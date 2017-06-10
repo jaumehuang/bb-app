@@ -1,0 +1,276 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="keywords" content="简汇,商城,企业管理" />
+		<meta name="description" content="简汇软件创作平台，极速上线，随需而变。" />
+		<meta name="HandheldFriendly" content="True" />
+		<meta name="MobileOptimized" content="320" />
+		<meta name="format-detection" content="telephone=no" />
+		<meta http-equiv="cleartype" content="on" />
+		<meta name="referrer" content="always" />
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link rel="shortcut icon" type="image/x-icon" href="../../static/favicon.ico" />
+		<title>邀请赞助</title>
+		<link class="ui" rel="stylesheet" href="../../static/css/min.css" />
+		<link class="ui" rel="stylesheet" href="../../static/css/me.css" />
+		<style type="text/css">
+			.Sponsor-foot .forward,
+			.mytry,
+			.support {
+				color: #fff;
+				margin-top:8px;
+				margin-bottom: 8px;
+			}
+			.Sponsor-foot button{
+
+				padding-left:10px;
+				padding-right:10px;
+			}
+			.Sponsor-foot .forward {
+				background: #009C95;
+			}
+			
+			.Sponsor-foot .mytry {
+				background: #DB2828;
+			}
+			
+			.Sponsor-foot .support {
+				background: #21BA45;
+			}
+			
+			.Sponsor .top-img {
+				height: 200px;
+				padding: 0;
+			}
+			
+			.Sponsor .top-img img {
+				height: 100%;
+				width: 100%;
+			}
+			
+			.Sponsor .top-title {
+				padding: 0;
+				margin-top: 14px;
+			}
+			
+			.Sponsor .top-title span {
+				padding: 14px 10px;
+				border: 1px solid #ddd;
+				border-radius: 4px;
+				background: #FEF9F2;
+				color: #7B3A08;
+				text-align: center;
+			}
+			
+			.Sponsor .show-goods {
+				margin-top: 14px;
+				padding: 0;
+			}
+			
+			.Sponsor .gift {
+				padding: 5px 2px;
+				background: #E8E8E8;
+				border-top-left-radius: 4px;
+				border-top-right-radius: 4px;
+			}
+			
+			.Sponsor .show-goods .show-img {
+				height: 236px;
+				padding: 0;
+				border:1px solid #ddd;
+			}
+			
+			.show-goods .show-img img {
+				display: block;
+				height: 100%;
+				width: 100%;
+			}
+			
+			.show-goods .show-title {
+				padding: 0;
+				text-align: center;
+				background: #767676;
+				color: #fff;
+			}
+			
+			.show-goods .table th,
+			td {
+				border: 1px solid #ddd;
+				text-align: center;
+			}
+			
+			.show-goods tbody td:nth-child(2) {
+				color: #21BA45
+			}
+			
+			.show-goods tbody td:last-child {
+				color: #FF0000;
+			}
+			
+			.show-goods .fa-heart {
+				color: #FF0000;
+			}
+			
+			.operation {
+				margin-top: 14px;
+			}
+			
+			.cancel,
+			.pay {
+				padding: 10px;
+				text-align: center;
+				color: #fff;
+				border-radius: 4px;
+			}
+			
+			.cancel {
+				background: #DB2828;
+				padding-left:20px;
+				padding-right:20px;
+			}
+			
+			.pay {
+				background: #21BA45;
+				padding-left:20px;
+				padding-right:20px;
+			}
+			
+			.popup {
+				margin-top: 100px;
+			}
+		</style>
+	</head>
+	<!--/*订单关闭后，仅仅已经付过款了的用户可以看到本页，否则，转往首页。*/-->
+
+	<body >
+		<div id="wrapper" >
+			<!--/*商品展示*/-->
+			<div class=" swiper-container Sponsor"  th:each="goods:${collectionInfo.goodsList}">
+				<div class="row top-img">
+					<img th:src="${goods.imgUrl}" src="../../static/images/ad1.jpg">
+				</div>
+				<div class="row top-title">
+					<span class="col-xs-12">问世间情为何物？直叫人把单买了。</span>
+				</div>
+				<!--商品展示-->
+				<div class="row show-goods">
+					<div class=" gift"><i class="fa fa-gift"></i> 商品</div>
+					<div class="show-img">
+						<img th:src="${goods.imgUrl}" src="../../static/images/ad2.jpg">
+					</div>
+					<div class="row show-title">
+						<div class="col-xs-12 text-center" th:text="${goods.name + ' ￥' + #numbers.formatDecimal(goods.price,1,2) +' × ' + goods.qty}">商品标题</div>
+						<div class="col-xs-">1222x2</div>
+					</div>
+					<table class="table">
+						<thead>
+							<tr>
+								<th>我的目标</th>
+								<th>现已完成</th>
+								<th>你的支持</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td th:text="${#numbers.formatDecimal(collectionInfo.total,1,2)}">2000.00</td>
+								<td th:text="${#numbers.formatDecimal(collectionInfo.payAmount,1,2)}">2000.00</td>
+								<td th:text="${#numbers.formatDecimal(collectionInfo.actorPayAmount,1,2)}">2000.00</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<!--友情赞助-->
+				<div class="row show-goods">
+					<div class="col-xs-12 gift"><i class="fa fa-heart"></i>
+						<span th:text="${'已获支持 ' + collectionInfo.payCount + '/' + collectionInfo.count}">已获得奥巴马先生2000</span>
+						<span th:text="${'历时 ' + collectionInfo.elapsedTime  + '分钟。'}">历时104分钟。</span>
+					</div>
+					<table class="table">
+						<tbody>
+							<tr th:each="det:${collectionInfo.details}" th:if="${det.status=='已付款'}">
+								<td th:text="${det.payAgent}">奥巴马</td>
+								<td th:text="${#numbers.formatDecimal(det.amount,1,2)}">2000.00</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<!--底部菜单-->
+			<div class="footer container-fluid Sponsor-foot">
+				<div class="row text-center">
+					<div class="col-xs-4 ">
+						<button type="button" class="forward btn">继续转发</button>
+					</div>
+					<div class="col-xs-4">
+						<button type="button" class=" mytry btn" id="play_button">我也试试</button>
+					</div>
+					<div class="col-xs-4 ">
+						<button class="support btn" id="support_button">支持一下</button>
+					</div>
+				</div>
+			</div>
+		</div>
+        <!--/*弹窗*/-->
+			<div class="popup row" style="display:none">
+				<div class="coupon">
+					 <h5>赞助好友</h5>               
+					<div class=" pay-money" id="collection_msg">
+						本次需要支付的金额为50000
+					</div>
+				</div>
+				<div class="row isbtn">
+					<button type="button" class="cancel btn pull-left">
+						取消
+					</button>
+					<button type="button" class="pay btn pull-right" id="confirm_btn">
+						支付
+					</button>
+				</div>
+			</div>
+		<input type="hidden" id="collection_id" th:value="${collectionInfo.id}" />
+		<input type="hidden" id="order_id" th:value="${collectionInfo.orderId}" />
+
+		<!--/*弹窗：end*/-->
+		<!--<script type="text/javascript" src="/wshop/static/js/jquery.min.js"></script>
+		<script type="text/javascript" src="/wshop/static/js/min.js"></script>
+		<script type="text/javascript" src="/wshop/static/js/swiper.min.js"></script>
+
+		<script type="text/javascript" src="/wshop/static/js/jweixin-1.0.0.js"></script>
+		<script type="text/javascript" src="/wshop/static/js/view/order.detail.collection.js"></script>-->
+		<script type="text/jscript" src="../../static/js/min.js"></script>
+
+		<script type="text/javascript">
+//			var mySwiper = new Swiper('.swiper-container', {
+//				loop: true,
+//				autoplay: 3000,
+//				autoplayDisableOnInteraction: false,
+//			})
+            var $btnsupport=$("#support_button");
+            var $btnpay = $(".pay");//支付按钮
+		    var $cancel=$(".cancel");//取消按钮
+		    
+            var $wrapper=$("#wrapper");//当前的页面
+            var $popup =$(".popup");//弹窗页面
+            //弹窗页面
+                $btnsupport.on("click",function(){
+                	$wrapper.hide();
+                	$popup.show();
+                	$("body").css("background","#000");
+                })
+            //退出弹窗页面
+            $cancel.on("click",function(){
+            	    $wrapper.show();
+                	$popup.hide();
+                	$("body").css("background","#fff");
+            })
+            $btnpay.on("click",function(){
+            	    $wrapper.show();
+                	$popup.hide();
+                	$("body").css("background","#fff");
+            });
+		</script>
+	</body>
+
+</html>

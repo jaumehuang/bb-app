@@ -1,0 +1,170 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="keywords" content="简汇,商城,企业管理" />
+		<meta name="description" content="简汇软件创作平台，极速上线，随需而变。" />
+		<meta name="HandheldFriendly" content="True" />
+		<meta name="MobileOptimized" content="320" />
+		<meta name="format-detection" content="telephone=no" />
+		<meta http-equiv="cleartype" content="on" />
+		<meta name="referrer" content="always" />
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link rel="shortcut icon" type="image/x-icon" href="/wshop/static/favicon.ico" />
+		<title>我的优惠券</title>
+		<link class="ui" rel="stylesheet" href="../../static/css/min.css" />
+		<link class="ui" rel="stylesheet" href="../../static/css/me.css" />
+		<style type="text/css">
+			/*优惠劵*/
+			
+			.coupon {
+				padding: 0 4px;
+			}
+			
+			.coupon-title {
+				padding-top: 10px;
+				padding-bottom: 10px;
+				background: #21BA45;
+				color: #fff;
+				box-shadow: 2px 3px 4px #888888;
+			}
+			
+			.coupon-title>div {
+				padding: 10px 14px;
+				text-align: center;
+				color: #fff;
+			}
+			
+			.coupon .top-nav {
+				position: fixed;
+				left: 0;
+				top: 50px;
+				right: 0;
+				width: 100%;
+				padding: 0 4px;
+				height: 44px;
+			}
+			
+			.coupon .top-nav>a {
+				padding: 10px 14px;
+				border: 1px solid #ddd;
+				text-align: center;
+				border-right: 0;
+			}
+			
+			.coupon .top-nav .active {
+				background: #21BA45;
+				color: #fff;
+				text-decoration: none;
+			}
+			.coupon {
+				position: absolute;
+				right: 0;
+				left: 0;
+				top: 100px;
+				bottom: 60px;
+				width: 100%;
+				height: auto;
+				overflow-y: auto;
+			}
+			
+			.my-coupon li {
+				position: relative;
+				height: 126px;
+			}
+			
+			.my-coupon .favourable {
+				position: absolute;
+				left: 44%;
+				top: 52%;
+				font-size: 20px;
+				transform: translate(-44%, -52%);
+			}
+			
+			.my-money {
+				font-weight: bolder;
+			}
+			/*优惠劵*/
+		</style>
+	</head>
+
+	<body>
+		<div id="wrapper">
+			<!--/*头部 */-->
+			<header class="coupon-title text-center">
+				我的优惠劵
+			</header>
+			<div class="coupon container">
+				<!--/*导航栏 */-->
+				<nav class="row top-nav ">
+					<a th:href="@{/mshop/user/coupon}" href="#" class="col-xs-4 active ">
+						未使用(<span th:text="${counts}"></span>)
+					</a>
+					<a th:href="@{/mshop/user/expirecoupon}" href="#" class="col-xs-4">
+						已过期(<span th:text="${expireCount}"></span>)
+					</a>
+					<a th:href="@{/mshop/user/usedcoupon}" href="#" class="col-xs-4" style="border-right:1px solid #ddd;">
+						已使用(<span th:text="${usedCount}"></span>)
+					</a>
+				</nav>
+				<!--/*导航栏*/ -->
+				<!-- /*展示优惠劵*/ -->
+				<ul class="my-coupon" th:each="item:${coupons}">
+					<li class="row">
+						<img src="../../static/images/yhquan.png" class="img-responsive">
+						<div class="favourable">
+							<div class="head-title" th:utext="${item.name}">afc</div>
+							<div class="my-money" th:text="${ #numbers.formatDecimal(item.discountAmount,1,2) }">5.00</div>
+							<div class="mydate" th:text="'有效期：'+${#dates.format(item.endTime,'yyyy-MM-dd ')}">2017-5-2</div>
+						</div>
+					</li>
+				</ul>
+				<!--/*展示优惠劵*/ -->
+			</div>
+			<!--/*底部菜单*/-->
+			<div class="footer">
+				<nav class="nav-justified btn-group-justified">
+					<a th:href="@{/mshop/index}" href="/mshop/templates/index.html" class="afc-default btn">
+						<div class="show-nav"><i class="fa fa-home"></i></div>
+						<div class="show-p">首页</div>
+					</a>
+					<a th:href="@{/mshop/goods/category}" href="/mshop/templates/goods/category.html" class="btn afc-default ">
+						<div class="show-nav"><i class="fa fa-bars"></i></div>
+						<div class="show-p">分类</div>
+					</a>
+					<a th:href="@{/mshop/cart/list}" href="/mshop/templates/cart.html" class="btn afc-default">
+						<div class="show-nav"><i class="fa fa-shopping-cart"></i></div>
+						<div class="show-p">购物车</div>
+					</a>
+					<a th:href="@{/mshop/user/home}" href="/mshop/templates/user/home.html" class="btn afc-active">
+						<div class="show-nav"><i class="fa fa-user-o "></i></div>
+						<div class="show-p">我</div>
+					</a>
+				</nav>
+			</div>
+		</div>
+		<!--<script type="text/javascript" src="/wshop/static/js/jquery.min.js"></script>-->
+		<script type="text/javascript" src="../../static/js/min.js"></script>
+
+		<!--<script type="text/javascript" src="/wshop/static/js/mui.min.js"></script>
+		<script type="text/javascript" src="/wshop/static/js/mui.picker.min.js"></script>
+		<script type="text/javascript" src="/wshop/static/js/mui.dtpicker.min.js"></script>
+		<script type="text/javascript" src="/wshop/static/js/mui.poppicker.min.js"></script>
+		<script type="text/javascript" th:src="@{/webjars/crypto-js/3.1.5/core.js}"></script>
+		<script type="text/javascript" th:src="@{/webjars/crypto-js/3.1.5/sha1.js}"></script>
+		<script type="text/javascript" src="/wshop/static/js/view/user.setting.js"></script>
+		<script type="text/javascript" src="/wshop/static/js/view/goods.info.js"></script>-->
+		<script type="text/javascript">
+			$('.menu .item').tab();
+			$('.ui.dropdown').dropdown();
+			//tab导航栏切换
+			var $tab = $(".top-nav a");
+			$tab.on("click", function() {
+				var $self = $(this);
+				$self.addClass("active").siblings().removeClass("active");
+			})
+		</script>
+	</body>
+
+</html>

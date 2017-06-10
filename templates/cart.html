@@ -1,0 +1,401 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="keywords" content="简汇,商城,企业管理" />
+		<meta name="description" content="简汇软件创作平台，极速上线，随需而变。" />
+		<meta name="HandheldFriendly" content="True" />
+		<meta name="MobileOptimized" content="320" />
+		<meta name="format-detection" content="telephone=no" />
+		<meta http-equiv="cleartype" content="on" />
+		<meta name="referrer" content="always" />
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link rel="shortcut icon" type="image/x-icon" href="/wshop/static/favicon.ico" />
+		<title>购物车</title>
+		<link class="ui" rel="stylesheet" href="../static/css/min.css" />
+		<link class="ui" rel="stylesheet" href="../static/css/me.css" />
+		<style type="text/css">
+			.header {
+				padding: 14px 0;
+				color: #000;
+				font-size: 1.071rem;
+				background: #fff;
+				font-weight: bolder;
+				box-shadow: 1px 4px 5px #888888;
+			}
+			
+			ul.row {
+				margin-left: 0;
+				margin-right: 0;
+			}
+			
+			.fa-trash-o {
+				padding: 4px;
+				font-size: 1.25rem;
+			}
+			
+			.show-tilte {
+				height: 32px;
+			}
+			
+			.cart {
+				padding-top: 80px;
+			}
+			
+			.cart ul>.item>div {
+				padding: 0;
+				height: 90px;
+			}
+			
+			.cart ul {
+				padding: 0;
+			}
+			
+			.cart ul>li {
+				margin-top: 10px;
+				background: #F0F0F0;
+				padding: 0;
+			}
+			
+			.cart .cartcheck {
+				position: relative;
+			}
+			
+			.cart .cartcheck input[type='checkbox'] {
+				z-index: 22;
+				opacity: 1;
+			}
+			
+			.cart .cartcheck i {
+				position: absolute;
+				left: 50%;
+				top: 54%;
+				transform: translate(-50%, -50%);
+				opacity: 0;
+				font-size: 21px;
+			}
+			
+			.cart .cartcheck input[type='checkbox'] {
+				height: 18px;
+				width: 18px;
+				position: absolute;
+				left: 50%;
+				top: 50%;
+				transform: translate(-50%, -50%);
+			}
+			
+			.cart .cartcheck input[type='checkbox']:checked {
+				opacity: 0;
+			}
+			
+			.cart .cartcheck input[type='checkbox']:checked+i {
+				opacity: 1;
+				color: #21BA45;
+			}
+			
+			.cart .show-img img {
+				display: block;
+				padding: 8px 2px;
+				height: 100%;
+			}
+			
+			.cart .right-title>div {
+				padding: 0;
+			}
+			
+			.cart .right-title .cart-bottom {
+				margin-top: 8px;
+			}
+			
+			.cart .right-title .number,
+			.price {
+				padding: 0;
+				height: 1.875rem;
+				line-height: 1.875rem;
+			}
+			
+			.cart .right-title .number>div {
+				padding: 0;
+				height: 1.875rem;
+				line-height: 1.875rem;
+			}
+			
+			.right-title .number {
+				border: 1px solid #ddd;
+			}
+			
+			.right-title .number input {
+				padding: 0;
+				border: 1px solid #DDD;
+				padding: 0;
+				border-radius: 0;
+				border: 0;
+				border-left: 1px solid #ddd;
+				border-right: 1px solid #ddd;
+				outline: none;
+				height: 28px;
+				background: #F0F0F0;
+			}
+			
+			.number a {
+				padding: 0;
+			}
+			
+			button {
+				background: #21BA45;
+				color: #fff;
+			}
+			
+			.none-shop i {
+				font-size: 6.5rem;
+				color: #21BA45;
+			}
+			
+			.casual {
+				margin-top: 20px;
+			}
+			
+			.casual a {
+				padding: 0.625rem 0;
+				text-align: center;
+				text-decoration: none;
+				background-color: #21BA45;
+				color: #fff;
+				border-radius: 4px;
+			}
+			
+			.shop-nn {
+				padding: 0 15px;
+			}
+			
+			.btn-lg {
+				background: #21BA45;
+				color: #fff;
+			}
+			
+			#wrapper {
+				padding-left: 0;
+				padding-right: 0;
+			}
+			
+			.mbsc-lv-ios .mbsc-lv-item:before,
+			.mbsc-lv-ios .mbsc-lv-item:after {
+				right: 0;
+				left: 0;
+			}
+			
+			.mbsc-lv-ic-s {
+				top: 68%;
+			}
+		</style>
+		<script type="text/javascript" src="../static/js/min.js"></script>
+	</head>
+
+	<body>
+		<div id="wrapper">
+			<!--/*头部标题*/-->
+			<nav class="nav-justified text-center header">
+				共<span id="itemCount" th:text="${itemCount}">3</span>件商品，合计<span id="total" th:text="${#numbers.formatDecimal(total,1,2)}">300.0</span>元。
+			</nav>
+			<div class="content swiper-container cart">
+				<!--/*商品展示*/-->
+				<ul class="row md-wo-list" th:each="goods:${goodsList}" id="demo">
+					<li class="col-xs-12 item">
+						<div class="col-xs-1 cartcheck">
+							<input type="checkbox" th:id="${'checked'+goodsStat.index}" name="itemSelector" th:disabled="${goods.maxBuys<=0}" th:checked="${goods.maxBuys>0}" th:attr="index=${goodsStat.index}">
+							<i class="fa fa-check-square-o"></i>
+						</div>
+						<div class="col-xs-3 show-img">
+							<a class="ui image" th:href="${'/mshop/goods/info/'+goods.catalog}" href="/wshop/templates/goods/iteminfo.html">
+								<img src="../static/images/ad1.jpg" th:src="${goods.imgUrl}" class="img-responsive">
+							</a>
+						</div>
+						<div class="col-xs-8 right-title">
+							<div class="show-tilte" th:text="${goods.name}">商品标题商品标题</div>
+							<div class="col-xs-12 cart-bottom">
+								<div class="col-xs-4 price text-center" th:text="${#numbers.formatDecimal(goods.price,1,2)}">￥120</div>
+								<div class="col-xs-6 number">
+									<!--/*减少*/-->
+									<a class="ui icon button leftbtn basic col-xs-4 ng-binding text-center" th:attr="index=${goodsStat.index}" name="reduceQtyBtn" th:disabled="${goods.maxBuys<1}">
+										<i class="fa fa-minus"></i>
+									</a>
+									<!--/*改变后数据*/-->
+									<input class="col-xs-4 ng-binding text-center" type="text" pattern="[0-9]*" th:name="goodsQty" th:attr="index=${goodsStat.index}" th:id="${'qty'+goodsStat.index}" th:value="${goods.qty}" value="123">
+									<!--/*增加*/-->
+									<a class="ui icon button rightbtn basic col-xs-4 ng-binding text-center" name="addQtyBtn" th:attr="index=${goodsStat.index}" th:disabled="${goods.maxBuys<2}">
+										<i class="fa fa-plus"></i>
+									</a>
+								</div>
+								<!--/*删除*/-->
+								<i class="fa fa-trash-o col-xs-2 garbage text-center" name="deleteBtn" th:attr="value=${goods.catalog}"></i>
+							</div>
+						</div>
+						<input type="hidden" th:id="${'catalog'+goodsStat.index}" th:value="${goods.catalog}" />
+						<input type="hidden" th:id="${'price'+goodsStat.index}" th:value="${goods.price}" />
+						<input type="hidden" th:id="${'minBuys'+goodsStat.index}" th:value="${goods.minBuys}" />
+						<input type="hidden" th:id="${'maxBuys'+goodsStat.index}" th:value="${goods.maxBuys}" />
+					</li>
+					<li class="col-xs-12 item">
+						<div class="col-xs-1 cartcheck">
+							<input type="checkbox" th:id="${'checked'+goodsStat.index}" name="itemSelector" th:disabled="${goods.maxBuys<=0}" th:checked="${goods.maxBuys>0}" th:attr="index=${goodsStat.index}">
+							<i class="fa fa-check-square-o"></i>
+						</div>
+						<div class="col-xs-3 show-img">
+							<a class="ui image" th:href="${'/mshop/goods/info/'+goods.catalog}" href="/wshop/templates/goods/iteminfo.html">
+								<img src="../static/images/ad1.jpg" th:src="${goods.imgUrl}" class="img-responsive">
+							</a>
+						</div>
+						<div class="col-xs-8 right-title">
+							<div class="show-tilte" th:text="${goods.name}">商品标题商品标题</div>
+							<div class="col-xs-12 cart-bottom">
+								<div class="col-xs-4 price text-center" th:text="${#numbers.formatDecimal(goods.price,1,2)}">￥120</div>
+								<div class="col-xs-6 number">
+									<!--/*减少*/-->
+									<a class="ui icon button leftbtn basic col-xs-4 ng-binding text-center" th:attr="index=${goodsStat.index}" name="reduceQtyBtn" th:disabled="${goods.maxBuys<1}">
+										<i class="fa fa-minus"></i>
+									</a>
+									<!--/*改变后数据*/-->
+									<input class="col-xs-4 ng-binding text-center" type="text" pattern="[0-9]*" th:name="goodsQty" th:attr="index=${goodsStat.index}" th:id="${'qty'+goodsStat.index}" th:value="${goods.qty}" value="123">
+									<!--/*增加*/-->
+									<a class="ui icon button rightbtn basic col-xs-4 ng-binding text-center" name="addQtyBtn" th:attr="index=${goodsStat.index}" th:disabled="${goods.maxBuys<2}">
+										<i class="fa fa-plus"></i>
+									</a>
+								</div>
+								<!--/*删除*/-->
+								<i class="fa fa-trash-o col-xs-2 garbage text-center" name="deleteBtn" th:attr="value=${goods.catalog}"></i>
+							</div>
+						</div>
+						<input type="hidden" th:id="${'catalog'+goodsStat.index}" th:value="${goods.catalog}" />
+						<input type="hidden" th:id="${'price'+goodsStat.index}" th:value="${goods.price}" />
+						<input type="hidden" th:id="${'minBuys'+goodsStat.index}" th:value="${goods.minBuys}" />
+						<input type="hidden" th:id="${'maxBuys'+goodsStat.index}" th:value="${goods.maxBuys}" />
+					</li>
+					<li class="col-xs-12 item">
+						<div class="col-xs-1 cartcheck">
+							<input type="checkbox" th:id="${'checked'+goodsStat.index}" name="itemSelector" th:disabled="${goods.maxBuys<=0}" th:checked="${goods.maxBuys>0}" th:attr="index=${goodsStat.index}">
+							<i class="fa fa-check-square-o"></i>
+						</div>
+						<div class="col-xs-3 show-img">
+							<a class="ui image" th:href="${'/mshop/goods/info/'+goods.catalog}" href="/wshop/templates/goods/iteminfo.html">
+								<img src="../static/images/ad1.jpg" th:src="${goods.imgUrl}" class="img-responsive">
+							</a>
+						</div>
+						<div class="col-xs-8 right-title">
+							<div class="show-tilte" th:text="${goods.name}">商品标题商品标题</div>
+							<div class="col-xs-12 cart-bottom">
+								<div class="col-xs-4 price text-center" th:text="${#numbers.formatDecimal(goods.price,1,2)}">￥120</div>
+								<div class="col-xs-6 number">
+									<!--/*减少*/-->
+									<a class="ui icon button leftbtn basic col-xs-4 ng-binding text-center" th:attr="index=${goodsStat.index}" name="reduceQtyBtn" th:disabled="${goods.maxBuys<1}">
+										<i class="fa fa-minus"></i>
+									</a>
+									<!--/*改变后数据*/-->
+									<input class="col-xs-4 ng-binding text-center" type="text" pattern="[0-9]*" th:name="goodsQty" th:attr="index=${goodsStat.index}" th:id="${'qty'+goodsStat.index}" th:value="${goods.qty}" value="123">
+									<!--/*增加*/-->
+									<a class="ui icon button rightbtn basic col-xs-4 ng-binding text-center" name="addQtyBtn" th:attr="index=${goodsStat.index}" th:disabled="${goods.maxBuys<2}">
+										<i class="fa fa-plus"></i>
+									</a>
+								</div>
+								<!--/*删除*/-->
+								<i class="fa fa-trash-o col-xs-2 garbage text-center" name="deleteBtn" th:attr="value=${goods.catalog}"></i>
+							</div>
+						</div>
+						<input type="hidden" th:id="${'catalog'+goodsStat.index}" th:value="${goods.catalog}" />
+						<input type="hidden" th:id="${'price'+goodsStat.index}" th:value="${goods.price}" />
+						<input type="hidden" th:id="${'minBuys'+goodsStat.index}" th:value="${goods.minBuys}" />
+						<input type="hidden" th:id="${'maxBuys'+goodsStat.index}" th:value="${goods.maxBuys}" />
+					</li>
+					<li class="col-xs-12 item">
+						<div class="col-xs-1 cartcheck">
+							<input type="checkbox" th:id="${'checked'+goodsStat.index}" name="itemSelector" th:disabled="${goods.maxBuys<=0}" th:checked="${goods.maxBuys>0}" th:attr="index=${goodsStat.index}">
+							<i class="fa fa-check-square-o"></i>
+						</div>
+						<div class="col-xs-3 show-img">
+							<a class="ui image" th:href="${'/mshop/goods/info/'+goods.catalog}" href="/wshop/templates/goods/iteminfo.html">
+								<img src="../static/images/ad1.jpg" th:src="${goods.imgUrl}" class="img-responsive">
+							</a>
+						</div>
+						<div class="col-xs-8 right-title">
+							<div class="show-tilte" th:text="${goods.name}">商品标题商品标题</div>
+							<div class="col-xs-12 cart-bottom">
+								<div class="col-xs-4 price text-center" th:text="${#numbers.formatDecimal(goods.price,1,2)}">￥120</div>
+								<div class="col-xs-6 number">
+									<!--/*减少*/-->
+									<a class="ui icon button leftbtn basic col-xs-4 ng-binding text-center" th:attr="index=${goodsStat.index}" name="reduceQtyBtn" th:disabled="${goods.maxBuys<1}">
+										<i class="fa fa-minus"></i>
+									</a>
+									<!--/*改变后数据*/-->
+									<input class="col-xs-4 ng-binding text-center" type="text" pattern="[0-9]*" th:name="goodsQty" th:attr="index=${goodsStat.index}" th:id="${'qty'+goodsStat.index}" th:value="${goods.qty}" value="123">
+									<!--/*增加*/-->
+									<a class="ui icon button rightbtn basic col-xs-4 ng-binding text-center" name="addQtyBtn" th:attr="index=${goodsStat.index}" th:disabled="${goods.maxBuys<2}">
+										<i class="fa fa-plus"></i>
+									</a>
+								</div>
+								<!--/*删除*/-->
+								<i class="fa fa-trash-o col-xs-2 garbage text-center" name="deleteBtn" th:attr="value=${goods.catalog}"></i>
+							</div>
+						</div>
+						<input type="hidden" th:id="${'catalog'+goodsStat.index}" th:value="${goods.catalog}" />
+						<input type="hidden" th:id="${'price'+goodsStat.index}" th:value="${goods.price}" />
+						<input type="hidden" th:id="${'minBuys'+goodsStat.index}" th:value="${goods.minBuys}" />
+						<input type="hidden" th:id="${'maxBuys'+goodsStat.index}" th:value="${goods.maxBuys}" />
+					</li>
+				</ul>
+				<div th:if="${#lists.isEmpty(goodsList)}" class="text-center shop-nn">
+					<!--/*购物车没有商品时*/-->
+					<div class="none-shop center-block" style="display:none;">
+						<i class=" fa fa-circle-o-notch fa-spin"></i>
+						<div>生活如此美好</div>
+						<div>而您的购物车却空空如也.</div>
+					</div><br/>
+					<a type="button" class="btn btn-lg btn-block" href="goods/category.html">继续挑选</a>
+				</div>
+			</div>
+			<!--/*底部菜单*/-->
+			<div class="footer">
+				<nav class="nav-justified btn-group-justified">
+					<a class="btn" href="goods/category.html">
+						<button class="btn" th:href="@{/mshop/goods/category}">继续挑选</button>
+					</a>
+					<a class="btn" href="">
+						<button class="btn" id="checkoutButton">现在结算</button>
+					</a>
+				</nav>
+			</div>
+		</div>
+		<!--/*脚本*/-->
+		<!--<script type="text/javascript" src="/wshop/static/js/jquery.min.js"></script>-->
+
+		<!--<script type="text/javascript" src="/wshop/static/js/view/cart.js"></script>
+-->
+		<script type="text/javascript">
+			var ids = 6;
+			var $noneshop = $(".none-shop");
+			$('#demo').mobiscroll().listview({
+				theme: 'ios',
+				lang: 'zh',
+				sortable: true,
+				iconSlide: true,
+				striped: true,
+				stages: [{
+					percent: -30,
+					color: 'red',
+					icon: 'remove',
+					text: '删除',
+					confirm: true,
+					action: function(event, inst) {
+						inst.remove(event.target);
+						return false;
+					}
+				}],
+				onItemRemove: function() {
+					if($('li', this).length < 2) {
+						$noneshop.show();
+					}
+				}
+			});
+		</script>
+	</body>
+
+</html>

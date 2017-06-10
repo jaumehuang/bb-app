@@ -1,0 +1,190 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="keywords" content="简汇,商城,企业管理" />
+		<meta name="description" content="简汇软件创作平台，极速上线，随需而变。" />
+		<meta name="HandheldFriendly" content="True" />
+		<meta name="MobileOptimized" content="320" />
+		<meta name="format-detection" content="telephone=no" />
+		<meta http-equiv="cleartype" content="on" />
+		<meta name="referrer" content="always" />
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link rel="shortcut icon" type="image/x-icon" href="/wshop/static/favicon.ico" />
+		<title>商品分类</title>
+		<link class="ui" rel="stylesheet" href="../../static/css/min.css" />
+		<link class="ui" rel="stylesheet" href="../../static/css/me.css" />
+		<style type="text/css">
+			/*商品分类样式*/
+			
+			.classifilist {
+				box-shadow: 1px 1px 3px #888888;
+				border-bottom: 1px solid #ddd;
+			}
+			.classifilist .swiper-container {
+				padding: 14px 15px;
+			}
+			.classif {
+				margin-top: 6.5rem;
+				padding: 0 14px;
+				overflow-x:hidden;
+			}
+			.classif .search {
+				position: fixed;
+				left: 0;
+				right: 0;
+				top: 64px;
+				border: 1px solid #ddd;
+				border-radius: 4px;
+				padding-right: 0;
+				padding-top:4px;
+				padding-bottom:4px;
+				margin-left:0;
+				margin-right:0;
+			}		
+			.classif .search input,
+			.btnsearch {
+				padding: 5px;
+			}
+			.classif .search .btnsearch {
+				text-align: center;
+				border-left: 1px solid #ddd;
+			}
+			.classif .search input {
+				border: 0;
+				padding-left: 2px;
+				outline: none;
+			}			
+			.classif .goods-list {
+				padding: 0;
+			}
+			.classif .goods-list>li {
+				list-style: none;
+				padding: 0;
+				border: 1px solid #ddd;
+				border-radius: 4px;
+				margin-top: 8px;
+			}
+			
+			.classif .item {
+				height: 90px;
+				padding: 0;
+			}
+			
+			.classif .item img {
+				display: block;
+				height: 100%;
+				width: 100%;
+			}
+			
+			.classif .show-title,
+			.show-price {
+			
+				padding-left: 10px;
+				padding-right:20px;
+			}
+			
+			.classif .show-title {
+				height: 40px;
+			}	
+			.classif .show-price {
+				height: 45px;
+				line-height: 45px;
+				color: #EE2C2C;
+			}
+			.good-shop{
+				border-bottom:1px solid #ddd;
+				padding:0;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="wrapper">
+			<!--/*头部标题*/-->
+			<header class="container-fluid classifilist">
+             <!--/*导航栏*/-->
+				<ul id="demo" style="display:none;" th:each="c:${classes}" name="classItem" th:attr="value=${c.id}">
+					<li data-tab="tab-downloaded" data-selected="true" th:text="${c.name}">Downloaded</li>
+					<li data-tab="tab-all">All</li>
+					<li data-tab="tab-external">External storage</li>
+					<li data-tab="tab-running">Running</li>
+					<li data-tab="tab-disabled">Disabled</li>
+				</ul>
+			</header>
+			<!--/*分类的总数量*/-->
+			<input type="hidden" id="count" name="count" th:value="${classes.size()}" />
+			<div class="content classif container-fluid">
+				<!--/*搜索框*/-->
+				<div class="row  search">
+					<input id="searchTextInput" type="text" name="" placeholder="商品名称/编码" class="col-xs-10">
+					<div id="searchButton" class="col-xs-2 btnsearch"><i class="fa fa-search"></i></div>
+				</div>
+				<!--/*商品列表*/-->
+				<div class="goods-list row" data-bind="foreach: datas">
+					<a class="good-shop col-xs-12" data-bind="attr:{href : '/mshop/goods/open/info/'+catalog}" href="/mshop/templates/goods/iteminfo.html" style="margin-top:8px">
+						<div class="col-xs-5 show-img item">
+							<img data-bind="attr:{src : imgUrl}" src="../../static/images/ad1.jpg">
+						</div>
+						<div class="col-xs-7 item">
+							<div class="show-tilte" data-bind="text:name">鸡蛋土鸡蛋土鸡蛋</div>
+							<div class="show-price text-right"><span data-bind="text:'￥ '+ tagPrice.toFixed(2)">120</span></div>
+						</div>
+					</a>
+				</div>
+			</div>
+			<!--/*底部菜单-->
+			<div class="footer">
+				<nav class="nav-justified btn-group-justified">
+					<a th:href="@{/mshop/index}" href="../index.html" class="afc-default btn">
+						<div class="show-nav"><i class="fa fa-home"></i></div>
+						<div class="show-p">首页</div>
+					</a>
+					<a th:href="@{/mshop/goods/category}" href="category.html" class="btn afc-active ">
+						<div class="show-nav"> <i class="fa fa-bars"></i> </div>
+						<div class="show-p">分类</div>
+					</a>
+					<a th:href="@{/mshop/cart/list}" href="../cart.html" class="btn afc-default">
+						<div class="show-nav"><i class="fa fa-shopping-cart"></i></div>
+						<div class="show-p">购物车</div>
+					</a>
+					<a th:href="@{/mshop/user/home}" href="../user/home.html" class="btn afc-default">
+						<div class="show-nav"><i class="fa fa-user-o "></i></div>
+						<div class="show-p">我</div>
+					</a>
+				</nav>
+			</div>
+		</div>
+		</div>
+
+		<form name="filterForm" id="filterForm" action="">
+			<input type="hidden" id="searchText" name="searchText" value="" />
+			<input type="hidden" id="category" name="category" value="" />
+			<input type="hidden" id="startIndex" name="startIndex" value="0" />
+			<input type="hidden" id="fetchSize" name="fetchSize" value="10" />
+		</form>
+
+		<!--/*脚本*/-->
+		<!--<script type="text/javascript" src="/wshop/static/js/jquery.min.js"></script>-->
+		<script type="text/javascript" src="../../static/js/min.js"></script>
+		<!--<script type="text/javascript" src="/wshop/static/js/dropload/zepto.min.js"></script>
+		<script type="text/javascript" src="/wshop/static/js/dropload/dropload.min.js"></script>
+		<script type="text/javascript" src="/wshop/static/js/knockout-min.js"></script>
+		<script type="text/javascript" src="/wshop/static/js/view/goods.category.js"></script>-->
+		<script>
+			$(function() {
+				$('#demo').mobiscroll().menustrip({
+					theme: 'ios',
+					display: 'top',
+					type: 'tabs',
+					onItemTap: function(event, inst) {
+						$('.md-tab-h').removeClass('md-tabs-sel');
+						$('.' + $(event.target).data('tab')).addClass('md-tabs-sel');
+					}
+				});
+			})
+		</script>
+	</body>
+
+</html>

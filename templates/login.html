@@ -1,0 +1,116 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="UTF-8" />
+<meta name="keywords" content="简汇,商城,企业管理" />
+<meta name="description" content="简汇软件创作平台，极速上线，随需而变。" />
+<meta name="HandheldFriendly" content="True" />
+<meta name="MobileOptimized" content="320" />
+<meta name="format-detection" content="telephone=no" />
+<meta http-equiv="cleartype" content="on" />
+<meta name="referrer" content="always" />
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+<link rel="shortcut icon" type="image/x-icon" href="/wshop/static/favicon.ico" />
+<title>用户登录</title>
+<link class="ui" rel="stylesheet" href="../static/css/min.css" />
+<link class="ui" rel="stylesheet" href="../static/css/me.css" />
+		<style type="text/css">
+			.container-fluid {
+				padding-top: 50px;
+				padding-left:15px;
+				padding-right:15px;
+			}
+			ul {
+				list-style: none;
+				padding: 0;
+			}
+			.form-horizontal .form-group {
+				margin-right: 0;
+				margin-left: 0;
+				padding: 6px 0;
+				border: 1px solid #ddd;
+				border-radius: 4px;
+				background: #fff;
+			}	
+			.form-group input {
+				border: none;
+				outline: none;
+				padding-top: 4px;
+				padding-bottom: 4px;
+				border-bottom-right-radius: 4px;
+				border-top-right-radius: 4px;
+			}
+			.form-group i {
+				color: #8C8C8C;
+				border-right: 1px solid #ddd;
+				border-bottom-left-radius: 4px;
+				border-top-left-radius: 4px;
+			}
+			.fa-cloud{
+				color:#337AB7;
+			}
+			.btn-primary {
+				padding-top: 10px;
+				padding-bottom: 10px;
+			}
+		</style>
+	</head>
+	<body>
+		<!--/*内容*/-->
+		<div class="container-fluid">
+			<div class="btn-group btn-group-justified " role="group" >
+				<div class="btn afc-app-active " role="button">
+					<i class="fa fa-cloud fa-4x "></i>
+					<p class="">欢迎进入商城</p>
+				</div>
+			</div>
+			<form class="form-horizontal" role="form" id="userForm" th:action="@{/login}" method="post">
+				 <input type="hidden" name="sucess" value="/" />
+		   		 <input type="hidden" name="password" />
+				<div class="form-group">
+					<i class="col-xs-2 fa fa-phone fa-2x"></i>
+					<input type="text" class="col-xs-10" id='account' name="username" placeholder="请输入账号">
+				</div>
+				<div class="form-group">
+					<i class="col-xs-2 fa fa-lock fa-2x "></i>
+					<input type="password" class="col-xs-10" id='password' name="pwd" placeholder="请输入密码">
+				</div>
+				<button type="submit" class="btn btn-primary  btn-block center-block" id='login'>登录</button>
+				<a type="submit" class="btn btn-primary  btn-block center-block" id='login'>新用户注册</a>
+			</form>
+	</div>
+    <script type="text/javascript" th:src="@{/webjars/crypto-js/3.1.5/core.js}"></script>
+		<script type="text/javascript" th:src="@{/webjars/crypto-js/3.1.5/sha1.js}"></script>
+		<script type="text/javascript" src="/wshop/static/js/jquery.min.js"></script>
+		<script type="text/javascript" src="/wshop/static/js/min.js"></script>
+</body>
+<script type="text/javascript">
+		//登录认证
+		$("#login").on("click", function(event) {
+			//event.preventDefault();
+			var username = $("form input[name=username]").val();
+			var password = $("form input[name=pwd]").val();
+			if($.trim(username).length == 0) {
+				alert('用户名不能为空!', '提示');
+				return false;
+			}
+			if($.trim(password).length == 0) {
+				alert('密码不能为空!', '提示');
+				return false;
+			}
+			var ciphertext = username + password;
+			for(var i = 0; i < 1024; i++) {
+				ciphertext = CryptoJS.SHA1(ciphertext);
+			}
+			$("form input[name=password]").val(ciphertext);
+			$.post('/login', $('#userForm').serialize(), function(data) {
+				if(data.isAuthenticated) {
+					location.href = "/";
+				} else {
+					alert('用户名或密码错误！');
+				}
+			}, "json");
+		});
+	</script>
+</html>

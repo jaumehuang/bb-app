@@ -1,0 +1,206 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="keywords" content="简汇,商城,企业管理" />
+		<meta name="description" content="简汇软件创作平台，极速上线，随需而变。" />
+		<meta name="HandheldFriendly" content="True" />
+		<meta name="MobileOptimized" content="320" />
+		<meta name="format-detection" content="telephone=no" />
+		<meta http-equiv="cleartype" content="on" />
+		<meta name="referrer" content="always" />
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link rel="shortcut icon" type="image/x-icon" href="/wshop/static/favicon.ico" />
+		<title>已完成订单</title>
+		<link class="ui" rel="stylesheet" href="../../static/css/min.css" />
+		<link class="ui" rel="stylesheet" href="../../static/css/me.css" />
+		<style type="text/css">
+			.classif .search {
+				position: fixed;
+				left: 0;
+				right: 0;
+				top: 10px;
+				border: 1px solid #ddd;
+				border-radius: 4px;
+				padding-right: 0;
+				padding-top: 4px;
+				padding-bottom: 4px;
+				margin-left: 0;
+				margin-right: 0;
+			}
+			
+			.classif .search input,
+			.btnsearch {
+				padding: 5px;
+			}
+			
+			.classif .search .btnsearch {
+				text-align: center;
+				border-left: 1px solid #ddd;
+			}
+			
+			.classif .search input {
+				border: 0;
+				padding-left: 2px;
+				outline: none;
+			}
+			
+			.finished {
+				position: absolute;
+				width: 100%;
+				left: 0;
+				top: 110px;
+				bottom: 0px;
+				overflow: auto;
+			}
+			
+			.finished>div {
+				padding-left: 10px;
+				padding-right: 10px;
+				margin-bottom: 10px;
+			}
+			
+			.classif {
+				padding: 10px;
+			}
+			
+			.pp-comment {
+				margin-left: 10px;
+			}
+			.finished-goods li{
+				padding-bottom:10px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="wrapper">
+			<div class="content classif container-fluid">
+				<!--搜索框-->
+				<form class="fixedsearch await row">
+					<div class="search col-xs-12">
+						<input type="text" name="searchText" placeholder="订单编号/商品编号/商品名称" class="col-xs-10">
+						<div class="col-xs-2 btnsearch" id="searchButton"><i class="fa fa-search"></i></div>
+					</div>
+					<input type="hidden" id="category" name="category" value="" />
+					<input type="hidden" id="startIndex" name="startIndex" value="0" />
+					<input type="hidden" id="fetchSize" name="fetchSize" value="5" />
+				</form>
+				<!--导航栏-->
+				<div class="row navlist">
+					<div class="col-xs-12">
+						<a class="col-xs-3 navitem" th:href="@{/mshop/order/list_pay}" href="list.pay.html">待付款</a>
+						<a class="col-xs-3 navitem" th:href="@{/mshop/order/list_collection}" href="list.collection.html">待赞助</a>
+						<a class="col-xs-3 navitem" th:href="@{/mshop/order/list_receive}" href="list.collection.html">待收货</a>
+						<a class="col-xs-3 navitem jiao" href="list.finished.html">已完成 <em></em><span></span></a>
+					</div>
+				</div>
+				<!--导航栏-->
+				<!--/*订单列表：start*/-->
+				<div class="row finished" data-bind="foreach: {data: datas, as: 'order' }">
+					<div class="row">
+						<div class="row head-title">
+							<div class="col-xs-6"><i class="fa fa-bookmark"></i><span data-bind="text:order.code">bb123456789</span></div>
+							<div class="col-xs-6"><i class="fa fa-calendar-check-o"></i><span data-bind="text:order.bizDateStr">2017-5-22</span></div>
+						</div>
+						<ul class="row finished-goods" data-bind="foreach: {data: items, as: 'item' }">
+							<li class="row">
+								<div class="row show-img">
+									<div class="col-xs-4 img ">
+										<a data-bind="attr:{href : '/mshop/goods/open/info/' + order.catalog}">
+											<img data-bind="attr:{src : item.itemImgUrl}" src="../../static/images/ad1.jpg">
+										</a>
+									</div>
+									<div class="col-xs-8 show-title">
+										<div class="title-p" data-bind="text:item.itemName">商品标题商品品标题商品标题</div>
+										<div class="good-number"><span data-bind="text: '数量：' + order.itemTotal + '件/'+ order.itemCount+'种'">5件/1种</span></div>
+										<div class="good-price"><span data-bind="text: '金额：￥ ' + order.total.toFixed(2)">￥1222</span></div>
+									</div>
+								</div>
+								<div class="row bottom-btn">
+									<a class="col-xs-3 pp-comment" data-bind="attr:{href:'/mshop/goods/comment/'+item.id}" href="../goods/comment.html"><span data-bind="text:item.commented?'已评论':'去评论'">去评论</span></a>
+									<a data-bind="attr:{href : '/mshop/order/detail_receive?orderId='+order.id}" class="col-xs-3" href="detail.receive.html">详情</a>
+									<a class="col-xs-3" data-bind="attr:{href : '/mshop/order/rebuy?lineId='+item.id}" href="../goods/category.html">再买</a>
+								</div>
+							</li>
+							<li class="row">
+								<div class="row show-img">
+									<div class="col-xs-4 img ">
+										<a data-bind="attr:{href : '/mshop/goods/open/info/' + order.catalog}">
+											<img data-bind="attr:{src : item.itemImgUrl}" src="../../static/images/ad1.jpg">
+										</a>
+									</div>
+									<div class="col-xs-8 show-title">
+										<div class="title-p" data-bind="text:item.itemName">商品标题商品品标题商品标题</div>
+										<div class="good-number"><span data-bind="text: '数量：' + order.itemTotal + '件/'+ order.itemCount+'种'">5件/1种</span></div>
+										<div class="good-price"><span data-bind="text: '金额：￥ ' + order.total.toFixed(2)">￥1222</span></div>
+									</div>
+								</div>
+								<div class="row bottom-btn">
+									<a class="col-xs-3 pp-comment" data-bind="attr:{href:'/mshop/goods/comment/'+item.id}"><span data-bind="text:item.commented?'已评论':'去评论'">去评论</span></a>
+									<a data-bind="attr:{href : '/mshop/order/detail_receive?orderId='+order.id}" class="col-xs-3">详情</a>
+									<a class="col-xs-3" data-bind="attr:{href : '/mshop/order/rebuy?lineId='+item.id}">再买</a>
+								</div>
+							</li>
+							<li class="row">
+								<div class="row show-img">
+									<div class="col-xs-4 img ">
+										<a data-bind="attr:{href : '/mshop/goods/open/info/' + order.catalog}">
+											<img data-bind="attr:{src : item.itemImgUrl}" src="../../static/images/ad1.jpg">
+										</a>
+									</div>
+									<div class="col-xs-8 show-title">
+										<div class="title-p" data-bind="text:item.itemName">商品标题商品品标题商品标题</div>
+										<div class="good-number"><span data-bind="text: '数量：' + order.itemTotal + '件/'+ order.itemCount+'种'">5件/1种</span></div>
+										<div class="good-price"><span data-bind="text: '金额：￥ ' + order.total.toFixed(2)">￥1222</span></div>
+									</div>
+								</div>
+								<div class="row bottom-btn">
+									<a class="col-xs-3 pp-comment" data-bind="attr:{href:'/mshop/goods/comment/'+item.id}"><span data-bind="text:item.commented?'已评论':'去评论'">去评论</span></a>
+									<a data-bind="attr:{href : '/mshop/order/detail_receive?orderId='+order.id}" class="col-xs-3">详情</a>
+									<a class="col-xs-3" data-bind="attr:{href : '/mshop/order/rebuy?lineId='+item.id}">再买</a>
+								</div>
+							</li>
+						</ul>
+					</div>
+				</div>
+				<!--/*订单列表：end*/-->
+			</div>
+			<!--底部菜单-->
+			<div class="footer">
+				<nav class="nav-justified btn-group-justified">
+					<a th:href="@{/mshop/index}" href="../index.html" class="afc-default btn">
+						<div class="show-nav"><i class="fa fa-home"></i></div>
+						<div class="show-p">首页</div>
+					</a>
+					<a th:href="@{/mshop/goods/category}" href="../goods/category.html" class="btn afc-default ">
+						<div class="show-nav"> <i class="fa fa-bars"></i> </div>
+						<div class="show-p">分类</div>
+					</a>
+					<a th:href="@{/mshop/cart/list}" href="../cart.html" class="btn afc-default">
+						<div class="show-nav"><i class="fa fa-shopping-cart"></i></div>
+						<div class="show-p">购物车</div>
+					</a>
+					<a th:href="@{/mshop/user/home}" href="../user/home.html" class="btn afc-active">
+						<div class="show-nav"><i class="fa fa-user-o "></i></div>
+						<div class="show-p">我</div>
+					</a>
+				</nav>
+			</div>
+		</div>
+
+		<script type="text/javascript" src="/wshop/static/js/jquery.min.js"></script>
+		<script type="text/javascript" src="/wshop/static/js/min.js"></script>
+		<!--动态加载数据-->
+		<script type="text/javascript" src="/wshop/static/js/dropload/zepto.min.js"></script>
+		<script type="text/javascript" src="/wshop/static/js/dropload/dropload.min.js"></script>
+		<script type="text/javascript" src="/wshop/static/js/knockout-min.js"></script>
+		<script type="text/javascript" src="/wshop/static/js/view/order.list.finished.js"></script>
+
+		<script type="text/javascript">
+			$('.menu .item').tab();
+		</script>
+	</body>
+
+</html>

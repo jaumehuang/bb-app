@@ -1,0 +1,158 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="keywords" content="简汇,商城,企业管理" />
+		<meta name="description" content="简汇软件创作平台，极速上线，随需而变。" />
+		<meta name="HandheldFriendly" content="True" />
+		<meta name="MobileOptimized" content="320" />
+		<meta name="format-detection" content="telephone=no" />
+		<meta http-equiv="cleartype" content="on" />
+		<meta name="referrer" content="always" />
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link rel="shortcut icon" type="image/x-icon" href="/wshop/static/favicon.ico" />
+		<title>我的</title>
+		<link class="ui" rel="stylesheet" href="../../static/css/min.css" />
+		<link class="ui" rel="stylesheet" href="../../static/css/me.css" />
+	</head>
+
+	<body>
+		<div id="wrapper">
+			<div class=" myhome container-fluid">
+				<div class="row user">
+					<div class="col-xs-12">
+						<div class="col-xs-6 show-img">
+							<img src="../../static/images/ad1.jpg">
+						</div>
+						<div class="col-xs-6 show-name">
+							<div th:text="${nickname}">小李飞刀</div>
+							<div>客户等级:<span th:text="${customeGrade}">金卡</span></div>
+						</div>
+					</div>
+				</div>
+				<!-- 列表按钮 -->
+				<div class="nav-list row">
+					<div class="col-xs-3 itpp">
+						<a th:href="@{/mshop/user/setting}" href="setting.html" class="col-xs-12 set">设置</a>
+					</div>
+					<div class="col-xs-3 itpp">
+						<a href="message.html" class="col-xs-12 news">消息</a>
+					</div>
+					<div class="col-xs-3 itpp">
+						<a th:href="@{/mshop/fav/list}" href="favorite.html" class="col-xs-12 mylove">收藏</a>
+					</div>
+					<div class="col-xs-3 itpp">
+						<a href="service.html" class="col-xs-12 service">客服</a>
+					</div>
+				</div>
+				<!-- 列表按钮 -->
+				<!--  表格单 -->
+				<div class="row home-table">
+					<div class="show-title">
+						<i class="fa fa-folder-open"></i>订单信息
+					</div>
+					<table class="table">
+						<thead>
+							<tr>
+								<th>
+									<a th:href="@{/mshop/order/list_pay}" href="../order/list.pay.html">待付款</a>
+								</th>
+								<th>
+									<a th:href="@{/mshop/order/list_collection}" href="../order/list.collection.html">待赞助</a>
+								</th>
+								<th>
+									<a th:href="@{/mshop/order/list_receive}" href="../order/list.receive.html">待收货</a>
+								</th>
+								<th>
+									<a th:href="@{/mshop/order/list_finished}" href="../order/list.finished.html">已完成</a>
+								</th>
+							</tr>
+						</thead>
+						<tbody class="text-center">
+							<tr>
+								<td>
+									<h4 class="ui header grey" th:text="${nonPayOrderCount}">0</h4></td>
+								<td>
+									<h4 class="ui header grey" th:text="${nonCollectionOrderCount}">0</h4></td>
+								<td>
+									<h4 class="ui header grey" th:text="${nonReceiveOrderCount}">0</h4></td>
+								<td>
+									<h4 class="ui header grey" th:text="${finishedOrderCount}">0</h4></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="row home-table">
+					<div class=" show-title">
+						<i class="fa fa-calculator"></i>财务信息(￥)
+					</div>
+					<table class="table">
+						<thead>
+							<tr>
+								<th>
+									<a th:href="@{/mshop/user/record}" href="record.html">消费记录</a>
+								</th>
+								<th>
+									<a th:href="@{/mshop/user/balance}" href="wallet.html">钱包余额</a>
+								</th>
+								<th>
+									<a th:href="@{/mshop/user/coupon}" href="coupon.html ">优惠券</a>
+								</th>
+								<th>
+									<a href="credits.html">积分</a>
+								</th>
+							</tr>
+						</thead>
+						<tbody class="text-center">
+							<tr>
+								<td>
+									<h4 class="ui header brown" th:text="${count}">0.00</h4></td>
+								<td>
+									<h4 class="ui header brown " th:text="${#numbers.formatDecimal(acctBalance*(-1),1,2)}">33.66</h4></td>
+								<td>
+									<h4 class="ui header brown " th:text="${couponCount}">5</h4></td>
+								<td>
+									<h4 class="ui header brown ">0</h4></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+
+				<!--  表格单 -->
+			</div>
+			<!-- 底部菜单 -->
+			<div class="footer">
+				<nav class="nav-justified btn-group-justified">
+					<a th:href="@{/mshop/index}" href="../index.html" class="afc-default btn">
+						<div class="show-nav"><i class="fa fa-home"></i></div>
+						<div class="show-p">首页</div>
+					</a>
+					<a th:href="@{/mshop/goods/category}" href="../goods/category.html" class="btn afc-default ">
+						<div class="show-nav"> <i class="fa fa-bars"></i> </div>
+						<div class="show-p">分类</div>
+					</a>
+					<a th:href="@{/mshop/cart/list}" href="../cart.html" class="btn afc-default">
+						<div class="show-nav"><i class="fa fa-shopping-cart"></i></div>
+						<div class="show-p">购物车</div>
+					</a>
+					<a th:href="@{/mshop/user/home}" href="home.html" class="btn afc-active">
+						<div class="show-nav"><i class="fa fa-user-o "></i></div>
+						<div class="show-p">我</div>
+					</a>
+				</nav>
+			</div>
+		</div>
+
+		<!--/*脚本*/-->
+		<script type="text/javascript " src="/wshop/static/js/jquery.min.js "></script>
+		<script type="text/javascript " src="/wshop/static/js/min.js "></script>
+		<script type="text/javascript ">
+			$('.menu .item')
+				.tab();
+			$('.ui.rating')
+				.rating();
+		</script>
+	</body>
+
+</html>

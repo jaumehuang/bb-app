@@ -1,0 +1,221 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="keywords" content="简汇,商城,企业管理" />
+		<meta name="description" content="简汇软件创作平台，极速上线，随需而变。" />
+		<meta name="HandheldFriendly" content="True" />
+		<meta name="MobileOptimized" content="320" />
+		<meta name="format-detection" content="telephone=no" />
+		<meta http-equiv="cleartype" content="on" />
+		<meta name="referrer" content="always" />
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link rel="shortcut icon" type="image/x-icon" href="/wshop/static/favicon.ico" />
+		<title>用户注册</title>
+		<link class="ui" rel="stylesheet" href="../static/css/min.css" />
+		<link class="ui" rel="stylesheet" href="../static/css/me.css" />
+		<style type="text/css">
+		   .register >div {
+				margin-top: 14px;
+			}
+			
+			.register .item {
+				padding: 0;
+				text-align: center;
+				background-color: #E8E8E8;
+				border-top-left-radius: 4px;
+				border-bottom-left-radius: 4px;
+			}
+			
+			.register .col-xs-12>div {
+				padding: 11px 0;
+			}
+			
+			.register .col-xs-12>input,
+			select {
+				padding: 10px;
+				border: none;
+				outline: none;
+				border: 1px solid #ddd;
+				border-left: none;
+				border-top-right-radius: 4px;
+				border-bottom-right-radius: 4px;
+			}
+			
+			.register .arrow:before {
+				border-width: 1px 1px 0 0;
+				-webkit-transform: translateX(50%) translateY(-50%) rotate(45deg);
+				transform: translateX(50%) translateY(-50%) rotate(45deg);
+				top: 50%;
+				right: 0;
+				bottom: auto;
+				left: auto background-color:#E8E8E8;
+			}
+			
+			.register .area>.col-xs-9 {
+				background: #00B5AD;
+				border-top-right-radius: 4px;
+				border-bottom-right-radius: 4px;
+				text-align: center;
+				color: #fff;
+			}
+			
+			.register .check-ma>div:last-child {
+				border: 1px solid #00B5AD;
+				border-radius: 4px;
+				padding: 10px 0;
+				text-align: center;
+			}
+			
+			.register .btn-save>div {
+				padding-bottom: 8px;
+				padding-top: 8px;
+				margin-bottom: 30px;
+				background: #00B5AD;
+				border-radius: 4px;
+				text-align: center;
+				color: #fff;
+			}
+			.register .sex>select {
+				border: 1px solid #ddd;
+				padding: 11px 0;
+				border-left: 0;
+			}
+			
+		</style>
+	</head>
+
+	<body>
+		<div id="wrapper">
+			<form class="container-fluid register">
+					<!--昵称-->
+					<div class="col-xs-12 name text-center">
+						<div class="col-xs-3 item arrow">昵称</div>
+						<input type="text" name="nickName" th:value="${nickname}" class="col-xs-9" placeholder="输入昵称">
+					</div>
+					<!--性别-->
+					<div class="col-xs-12 sex ">
+						<div class="col-xs-3 item arrow">性别</div>
+						<select class="col-xs-9 text-center" id="gender" name="gender">
+							<option th:selected="${sex == 'SECURITY'}" value="SECURITY">保密</option>
+							<option th:selected="${sex == 'MALE'}" value="MALE">男</option>
+							<option th:selected="${sex == 'FEMALE'}" value="FEMALE">女</option>
+						</select>
+					</div>
+					<!--手机号码-->
+					<div class="col-xs-12 phone ">
+						<div class="col-xs-3 item arrow">手机号码</div>
+						<input type="text" id="phone" name="phone" placeholder="输入手机号码" class="col-xs-9">
+					</div>
+					<!--登录账号-->
+					<div class="col-xs-12 account">
+						<div class="col-xs-3 item arrow">登录账号</div>
+						<input type="text" id="account" name="account" placeholder="用于登录AFC产品" class="col-xs-9">
+					</div>
+					<!--登录密码-->
+					<div class="col-xs-12 password">
+						<div class="col-xs-3 item arrow">登录密码</div>
+						<input type="text" id="password" name="password" placeholder="输入新密码" class="col-xs-9">
+					</div>
+					<!--确认密码-->
+					<div class="col-xs-12 ispassword arrow">
+						<div class="col-xs-3 item">确认密码</div>
+						<input type="password" id="confirm_password" placeholder="再次输入密码" class="col-xs-9">
+					</div>
+					<!--区域-->
+					<div class="col-xs-12 area">
+						<div class="col-xs-3 item ">区域</div>
+						<ul id="domain" id='addr_picker' style="display:none;">
+							<li data-val="广东省">广东省
+								<ul>
+									<li data-val="广州市">广州市
+										<ul>
+											<li data-val="白云区">白云区</li>
+											<li data-val="天河区">天河区</li>
+											<li data-val="黄浦区">黄浦区</li>
+										</ul>
+									</li>
+									
+									<li data-val="深圳市">深圳市
+										<ul>
+											<li data-val="罗湖区">罗湖区</li>
+											<li data-val="云冈区">云冈区</li>
+										</ul>
+									</li>
+								</ul>
+							</li>
+							<li data-val="广西壮族自治区">广西壮族自治区
+								<ul>
+									<li data-val="南宁">南宁
+										<ul>
+											<li data-val="嘻嘻嘻">嘻嘻嘻</li>
+											<li data-val="嘻嘻嘻">嘻嘻嘻</li>
+											<li data-val="嘻嘻嘻">嘻嘻嘻</li>
+										</ul>
+									</li>
+									<li data-val="桂林">桂林
+										<ul>
+											<li data-val="燕塘区">燕塘区</li>
+										</ul>
+									</li>
+									
+								</ul>
+							</li>
+						</ul>
+
+						<input type="hidden" id="province" name="province" />
+						<input type="hidden" id="city" name="city" />
+						<input type="hidden" id="town" name="town" />
+					</div>
+					<!--地址-->
+					<div class="col-xs-12 address">
+						<div class="col-xs-3 item arrow">地址</div>
+						<input type="text" id="addrDetail" name="addrDetail" placeholder="街道和门牌号" class="col-xs-9">
+					</div>
+					<!--收货人-->
+					<div class="col-xs-12 gooder">
+						<div class="col-xs-3 item arrow">收货人</div>
+						<input type="text" id="contact" name="contact" th:value="${nickname}" placeholder="收货人" class="col-xs-9">
+					</div>
+					<!--收货电话-->
+					<div class="col-xs-12 gooder-phnone">
+						<div class="col-xs-3 item arrow">收货电话</div>
+						<input type="text" id="contactPhone" name="contactPhone" placeholder="输入收货电话" class="col-xs-9">
+					</div>
+					<!--验证码-->
+					<div class="col-xs-12 check-ma">
+						<div class="col-xs-3 item arrow">验证码</div>
+						<input type="text" id="captcha" name="captcha" placeholder="三分钟内有效" class="col-xs-6">
+						<div class="col-xs-3" id="get_captcha_btn">获取</div>
+					</div>
+					<!--提交-->
+					<div class="col-xs-12 btn-save">
+						<div class="col-xs-12" id="submitButton">提交注册资料</div>
+					</div>
+				</div>
+			</form>
+
+		<!--<script type="text/javascript" src="/wshop/static/js/jquery.min.js"></script>-->
+		<script type="text/javascript" src="../static/js/min.js"></script>
+
+		<!--<script type="text/javascript" src="/wshop/static/js/mui.min.js"></script>
+  <script type="text/javascript" src="/wshop/static/js/mui.picker.min.js"></script>
+  <script type="text/javascript" src="/wshop/static/js/mui.dtpicker.min.js"></script>
+  <script type="text/javascript" src="/wshop/static/js/mui.poppicker.min.js"></script>
+  <script type="text/javascript" src="/wshop/static/js/view/wechat.register.js"></script>-->
+		<script>
+			$(function() {
+				//选择区域
+				$('#domain').mobiscroll().treelist({
+					theme: 'ios',
+					lang: 'zh',
+					display: 'bottom',
+					width: [120, 100, 116],
+					placeholder: '输入省市区',
+					labels: ['Region', 'Supervisor', 'Tech']
+				});
+			});
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,283 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="keywords" content="简汇,商城,企业管理" />
+		<meta name="description" content="简汇软件创作平台，极速上线，随需而变。" />
+		<meta name="HandheldFriendly" content="True" />
+		<meta name="MobileOptimized" content="320" />
+		<meta name="format-detection" content="telephone=no" />
+		<meta http-equiv="cleartype" content="on" />
+		<meta name="referrer" content="always" />
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link rel="shortcut icon" type="image/x-icon" href="/wshop/static/favicon.ico" />
+		<title>商品评价</title>
+		<link class="ui" rel="stylesheet" href="../../static/css/min.css" />
+		<link class="ui" rel="stylesheet" href="../../static/css/me.css" />
+		<style type="text/css">
+			.panel-heading {
+				padding: 0;
+				padding-top: 4px;
+				padding-bottom: 4px;
+			}
+			
+			.panel-body {
+				padding: 0;
+			}
+			
+			.comment {
+				padding: 0 10px;
+				margin-top:10px;
+			}
+			
+			.comment .tophead {
+				padding: 0;
+				background: #E8E8E8;
+			}
+			
+			.comment .tophead>div {
+				padding: 5px;
+				font-size: 14px;
+			}
+			
+			.comment .tophead>div i {
+				color: #06843E;
+				padding-right: 10px;
+			}
+			
+			.comment .show-img {
+				height: 168px;
+				padding: 0;
+			}
+			
+			.comment .show-img img {
+				display: block;
+				height: 100%;
+				width: 100%;
+			}
+			
+			.comment .show-title {
+				padding: 12px 0;
+			}
+			
+			.goods-comment {
+				margin-top: 8px;
+				border: 1px solid #ddd;
+				padding: 0;
+				border-radius: 4px;
+			}
+			
+			.comment .comment-title {
+				margin: 20px 0;
+			}
+			
+			.line {
+				border-bottom: 1px solid #ddd;
+				height: 10px;
+			}
+			
+			.top-title {
+				padding-top: 10px;
+			}
+			
+			.top-title .text-center {
+				padding: 0;
+			}
+			
+			.verygood {
+				border-right: 1px solid #ddd;
+				height: 68px;
+				line-height: 60px;
+			}
+			
+			.segment {
+				padding-top: 16px;
+				padding-bottom: 16px;
+				height: 380px;
+			}
+			
+			.segment .row {
+				border-bottom: 1px solid #ddd;
+			}
+			
+			.segment .row>div {
+				padding: 8px;
+			}
+			
+			textarea {
+				margin-top: 16px;
+				height: 100px;
+			}
+			
+			.mbsc-ios .mbsc-sc-whl-l,
+			.mbsc-ios.mbsc-calendar .mbsc-sc-whl-l {
+				display: none;
+			}
+			
+			.mbsc-rating-icon {
+				width: 1.8rem;
+				font-size: 22px;
+			}
+			
+			.shop-goods {
+				overflow-x: hidden;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="wrapper">
+			<div class="content comment container-fluid shop-goods">
+				<!--/*面板商品*/-->
+				<div class="panel panel-default">
+					<div class="panel-heading row">
+						<div class="col-xs-6">
+							<i class="fa fa-bookmark-o"></i>
+							<span th:text="${comment.orderCode}">123467899</span>
+						</div>
+						<div class="col-xs-6">
+							<i class="fa fa-calendar-check-o"></i>
+							<span th:text="${#dates.format(comment.bizDate,'yyyy-MM-dd HH:mm')}">2017-12-22</span>
+						</div>
+					</div>
+					<div class="panel-body row">
+						<div class="col-xs-12 show-img">
+							<img th:src="${comment.itemImg}" src="../../static/images/ad1.jpg">
+						</div>
+						<div class="col-xs-12 show-title text-center">
+							<span th:text="${comment.itemName + '￥' + #numbers.formatDecimal(comment.price,1,2) + ' × '+ #numbers.formatDecimal(comment.tranQty,1,0)}">商品标题:￥500.00 × 2</span>
+						</div>
+					</div>
+				</div>
+				<!--/*你的评价让我们进步*/-->
+				<div class="row top-title">
+					<div class="col-xs-3 line">
+					</div>
+					<div class="col-xs-6 text-center">你的评价让我们进步</div>
+					<div class="col-xs-3 line">
+					</div>
+				</div>
+				<!-- /*满意度*/-->
+				<div class="segment">
+					<div class="row">
+						<div class=" col-xs-6 verygood text-center">商品满意度</div>
+						<div class=" col-xs-6 md-rating" th:attr="data-rating=${comment.goodsLevel}">
+							<input value="5" type="hidden" class="mobiscroll" />
+						</div>
+					</div>
+					<div class="row">
+						<div class=" col-xs-6 verygood text-center">物流满意度</div>
+						<div class=" col-xs-6 md-rating" th:attr="data-rating=${comment.goodsLevel}">
+							<input value="5" type="hidden" class="mobiscroll" />
+						</div>
+					</div>
+					<div class="row">
+						<div class=" col-xs-6 verygood text-center">客服满意度</div>
+						<div class=" col-xs-6 md-rating" th:attr="data-rating=${comment.goodsLevel}">
+							<input value="5" type="hidden" class="mobiscroll" />
+						</div>
+					</div>
+					<!--/*文本输入*/-->
+					<form role="form">
+						<div class="form-group">
+							<textarea class="form-control" rows="4" placeholder="写下购买体会和使用感受来帮助其他的小伙伴哦~"></textarea>
+						</div>
+					</form>
+				</div>
+			</div>
+			<!--/*底部菜单*/-->
+			<div class="footer">
+				<nav class="nav-justified btn-group-justified">
+					<a class="btn" href="category.html">
+						<button class="btn" th:href="@{/mshop/goods/category}" >立即返回</button>
+					</a>
+					<a class="btn" href="javascript:">
+						<button class="btn" id="checkoutButton">发表评价</button>
+					</a>
+				</nav>
+			</div>
+		</div>
+		<input type="hidden" id="lineId" th:value="${comment.lineId}" />
+		<input type="hidden" id="orderId" th:value="${comment.orderId}" />
+
+		<!-- <script type="text/javascript" src="/wshop/static/js/jquery.min.js"></script>-->
+		<script type="text/javascript" src="../../static/js/min.js"></script>
+		<!-- <script type="text/javascript" src="../../static/js/view/goods.comment.js"></script>-->
+		<script type="text/javascript">
+			//评论满意度
+			mobiscroll.settings = {
+				theme: 'ios'
+			};
+			$(function() {
+
+				$('.mobiscroll').mobiscroll().rating({
+					display: 'inline',
+					cssClass: 'md-slide-rating',
+					rows: 1,
+					height: 30,
+					readonly: false,
+					showText: false,
+					showLabel: false,
+					mousewheel: true,
+					minWidth: 215,
+					values: [1, 2, 3, 4, 5],
+					onMarkupReady: function(event, inst) {
+
+						var left,
+							width,
+							pos,
+							moving,
+							newVal,
+							currentVal = inst.getVal(),
+							getCoord = mobiscroll.util.getCoord;
+
+						function setVal(ev) {
+							pos = getCoord(ev, 'X') - left;
+							newVal = Math.max(0, Math.min(Math.ceil(pos * 5 / width), 5));
+
+							if(newVal != currentVal) {
+								currentVal = newVal;
+								inst.setVal(newVal, true, true, false, 0);
+							}
+						}
+
+						function onStart(ev) {
+							if(!moving) {
+								moving = true;
+								left = $(this).offset().left;
+								width = $(this).outerWidth();
+								setVal(ev);
+
+								if(ev.type == 'mousedown') {
+									$(document).on('mousemove', onMove).on('mouseup', onEnd);
+								}
+							}
+						}
+
+						function onMove(ev) {
+							if(moving) {
+								setVal(ev);
+							}
+						}
+
+						function onEnd(ev) {
+							moving = false;
+
+							if(ev.type == 'mouseup') {
+								$(document).off('mousemove', onMove).off('mouseup', onEnd);
+							}
+						}
+
+						$('.mbsc-sc-whl-sc', event.target)
+							.on('touchstart mousedown', onStart)
+							.on('touchmove', onMove)
+							.on('touchend', onEnd);
+					}
+				});
+
+			});
+		</script>
+	</body>
+
+</html>

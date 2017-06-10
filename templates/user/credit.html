@@ -1,0 +1,206 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="keywords" content="简汇,商城,企业管理" />
+		<meta name="description" content="简汇软件创作平台，极速上线，随需而变。" />
+		<meta name="HandheldFriendly" content="True" />
+		<meta name="MobileOptimized" content="320" />
+		<meta name="format-detection" content="telephone=no" />
+		<meta http-equiv="cleartype" content="on" />
+		<meta name="referrer" content="always" />
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link rel="shortcut icon" type="image/x-icon" href="/wshop/static/favicon.ico" />
+		<title>我的借款</title>
+		<link class="ui" rel="stylesheet" href="../../static/css/min.css" />
+		<link class="ui" rel="stylesheet" href="../../static/css/me.css" />
+	</head>
+
+	<body>
+		<div id="wrapper">
+			<div class="content loan container-fluid">
+				<div class="top-title col-xs-12">
+					<div class="row">
+						<div class="col-xs-6 loan-money">
+							<div>借款总额</div>
+							<div th:text="${'￥ ' +#numbers.formatDecimal(debtAmount,1,2)}">￥1200</div>
+						</div>
+						<div class="col-xs-3 it">
+							<div class="myloan" id="credit_button">借款</div>
+						</div>
+						<div class="col-xs-3 it">
+							<div class="still" id="pay_button">还款</div>
+						</div>
+					</div>
+				</div>
+				<div class="row loan-time">
+					<div class="col-xs-2 btn">
+						<div class=" arrow-left " id="preMonthBtn">
+							<i class="fa fa-arrow-left"></i>
+						</div>
+					</div>
+					<div class="col-xs-8 get-date">
+						<div class="col-xs-6">交易时间</div>
+						<input class="col-xs-6" id="monthSelector" value="2017-05-15">
+					</div>
+					<div class="col-xs-2 btn">
+						<div class=" arrow-right " id="nextMonthBtn">
+							<i class="fa fa-arrow-right"></i>
+						</div>
+					</div>
+				</div>
+				<!-- 借款列表 -->
+				<div class="row loan-list">
+					<div class=" list-title">
+						<i class="fa fa-calendar-check-o"></i> 信贷交易清单
+					</div>
+					<table class="table table-striped">
+						<thead>
+							<tr>
+								<th>日期</th>
+								<th>业务</th>
+								<th>金额(￥)</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr data-bind="foreach: {data: datas}">
+								<td data-bind="text:bizDateStr">2017-12-22</td>
+								<td data-bind="text:bizName">败家</td>
+								<td data-bind="text:'￥ '+ total.toFixed(2)">3000</td>
+							</tr>
+
+						</tbody>
+					</table>
+				</div>
+				<!-- 借款列表 -->
+			</div>
+			<!-- 底部菜单 -->
+			<div class="footer">
+				<nav class="nav-justified btn-group-justified">
+					<a th:href="@{/mshop/index}" href="../index.html" class="afc-default btn">
+						<div class="show-nav"><i class="fa fa-home"></i></div>
+						<div class="show-p">首页</div>
+					</a>
+					<a th:href="@{/mshop/goods/category}" href="../goods/category.html" class="btn afc-default ">
+						<div class="show-nav"> <i class="fa fa-bars"></i> </div>
+						<div class="show-p">分类</div>
+					</a>
+					<a th:href="@{/mshop/cart/list}" href="../cart.html" class="btn afc-default">
+						<div class="show-nav"><i class="fa fa-shopping-cart"></i></div>
+						<div class="show-p">购物车</div>
+					</a>
+					<a th:href="@{/mshop/user/home}" href="../user/home.html" class="btn afc-active">
+						<div class="show-nav"><i class="fa fa-user-o "></i></div>
+						<div class="show-p">我</div>
+					</a>
+				</nav>
+			</div>
+		</div>
+
+		<input type="hidden" id="debtAmount" th:value="${debtAmount}" />
+		<input type="hidden" id="availableCredit" th:value="${availableCredit}" />
+
+		<!--/*弹窗：end*/-->
+		<!--/*脚本*/-->
+		<!--<script type="text/javascript" src="/wshop/static/js/jquery.min.js"></script>-->
+		<script type="text/javascript" src="../../static/js/min.js"></script>
+		<!--/*日期拾取*/-->
+		<!--<script type="text/javascript" src="/wshop/static/js/mui.min.js"></script>
+		<script type="text/javascript" src="/wshop/static/js/mui.picker.min.js"></script>
+		<script type="text/javascript" src="/wshop/static/js/mui.dtpicker.min.js"></script>
+		<script type="text/javascript" src="/wshop/static/js/mui.poppicker.min.js"></script>
+
+		<script type="text/javascript" src="/wshop/static/js/dropload/zepto.min.js"></script>
+		<script type="text/javascript" src="/wshop/static/js/dropload/dropload.min.js"></script>
+		<script type="text/javascript" src="/wshop/static/js/knockout-min.js"></script>
+		<script type="text/javascript" th:src="@{/webjars/crypto-js/3.1.5/core.js}"></script>
+		<script type="text/javascript" th:src="@{/webjars/crypto-js/3.1.5/sha1.js}"></script>
+
+		<script type="text/javascript" src="/wshop/static/js/view/user.credit.js"></script>-->
+
+		<script type="text/javascript">
+			//			$('.menu .item').tab();
+			//
+			//			$('#credit_button').on('click', function() {
+			//				$('#credit_modal').modal({
+			//					closable: false, //在点击按钮前不准关闭
+			//				}).modal('show');
+			//			});
+			//
+			//			$('#pay_button').on('click', function() {
+			//				$('#pay_modal').modal({
+			//					closable: false, //在点击按钮前不准关闭
+			//				}).modal('show');
+			//			});
+			//
+			//			$('.ui.rating').rating();
+			//日期选择
+			mobiscroll.settings = {
+				theme: 'ios',
+				lang: 'zh',
+				display: 'bottom'
+			};
+			$(function() {
+				$('#monthSelector').mobiscroll().calendar({
+					calendarScroll: 'horizontal',
+					dateWheels: 'yy MM dd',
+					dateFormat: 'yy-mm-dd',
+					onBeforeClose: function(event, inst) {
+						var $date = event.valueText; //获取选中的日期
+						Addsubdate($date);
+					}
+				});
+			});
+			//日期显示框
+			var $display = $("#monthSelector");
+			//获取初始化的日期值
+			var $initDate = $("#monthSelector").val();
+			//初始化日期
+			Addsubdate($initDate);
+			//日期的加减
+			function Addsubdate($date) {
+				var $reduce = $(".arrow-left");
+				var $addtn = $(".arrow-right");
+				var i = 0; //天数变量
+				//日期变化函数
+				function changeDate(dd, dadd) {
+					var a = new Date(dd)
+					a = a.valueOf()
+					a = a + dadd * 24 * 60 * 60 * 1000
+					a = new Date(a)
+					return a;
+				}
+				//抓取需要变化的日期函数
+				function nowDate(dd) {
+					var now = new Date(dd);
+					var years = now.getFullYear();
+					var months = now.getMonth() + 1;
+					var days = now.getDate();
+					var hours = now.getHours();
+					var NextNow = changeDate(months + "-" + days + "-" + years, i);
+					years = NextNow.getFullYear();
+					months = NextNow.getMonth() + 1;
+					days = NextNow.getDate();
+					//判断数据是否大于9
+					months=months>9?months:"0"+months;
+					days =days>9?days:"0"+days;
+					return(years + "-" + months + "-" + days);
+				}
+				$reduce.on("click", function() {
+					i--;
+					var displayDate = nowDate($date, i);
+					$display.val(displayDate);
+
+				});
+				$addtn.on("click", function() {
+					i++;
+					var displayDate = nowDate($date, i);
+					$display.val(displayDate);
+				});
+
+			}
+		</script>
+	</body>
+
+</html>

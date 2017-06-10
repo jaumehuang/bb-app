@@ -1,0 +1,227 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="keywords" content="简汇,商城,企业管理" />
+		<meta name="description" content="简汇软件创作平台，极速上线，随需而变。" />
+		<meta name="HandheldFriendly" content="True" />
+		<meta name="MobileOptimized" content="320" />
+		<meta name="format-detection" content="telephone=no" />
+		<meta http-equiv="cleartype" content="on" />
+		<meta name="referrer" content="always" />
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link rel="shortcut icon" type="image/x-icon" href="/wshop/static/favicon.ico" />
+		<title>我的收藏</title>
+		<link class="ui" rel="stylesheet" href="../../static/css/min.css" />
+		<link class="ui" rel="stylesheet" href="../../static/css/me.css" />
+		<style type="text/css">
+			/*收藏*/
+			
+			.favorite-top {
+				margin-top: 24px;
+			}
+			
+			.favorite-top>div {
+				padding: 0;
+			}
+			
+			.favorite-top>div .itb {
+				padding: 8px 10px;
+				text-align: center;
+			}
+			
+			.favorite-top .angle-left>i {
+				font-size: 20px;
+			}
+			
+			.favorite-top .all-good {
+				border: 1px solid #21BA45;
+				border-radius: 4px;
+				color: #21BA45;
+			}
+			
+			.favorite-top .mycat {
+				position: relative;
+				border: 1px solid #ddd;
+				border-radius: 4px;
+			}
+			
+			.favorite-top .mycat>i {
+				font-size: 20px;
+				color: #000;
+			}
+			
+			.favorite-top .mycat>.goodsnumber {
+				padding: 3px;
+				position: absolute;
+				right: -10px;
+				top: -19px;
+				background: #FF0000;
+				border-radius: 4px;
+				color: #fff;
+			}
+			
+			.favorite {
+				margin-top: 78px;
+			}
+			
+			.favorite-list>ul {
+				padding: 0;
+			}
+			
+			.favorite-list>ul>li {
+				height: 90px;
+				padding: 0;
+				list-style: none;
+				background: #F0F0F0;
+				margin-top: 10px;
+			}
+			
+			.favorite-list>ul>li>div {
+				height: 90px;
+				padding: 0;
+			}
+			.favorite-list .show-img{
+				height:90px;
+				padding:0;
+			}
+			.favorite-list .show-img>img {
+				display: block;
+				height: 100%;
+				width: 100%;
+			}
+			
+			.favorite-list .show-title {
+				overflow: hidden;
+				text-overflow: ellipsis;
+				display: -webkit-box;
+				-webkit-line-clamp: 1;
+				-webkit-box-orient: vertical;
+			}
+			
+			.favorite-list .it-p {
+				padding: 0;
+			}
+			
+			.favorite-list .add-cart,
+			.delete-goods {
+				padding: 10px 0;
+			}
+			
+			.favorite-list .add-cart {
+				background: #21BA45;
+				border-radius: 4px;
+				color: #fff;
+				text-align: center;
+			}
+			.favorite-list .right-div{
+				padding-left:12px;
+			}
+			.favorite-list .delete-goods {
+				margin-left: 10px;
+			}
+			.fa-trash-o{
+				padding-left:10px;
+				font-size:18px;
+			}
+			/*收藏*/
+		</style>
+	</head>
+
+	<body>
+		<div id="wrapper">
+			<!--  头部 -->
+			<header class="container-fluid favorite-top">
+				<div class="row">
+					<div class="col-xs-2">
+						<div class="col-xs-12 itb angle-left">
+							<a th:href="@{/mshop/user/home} " href="/mshop/templates/user/home.html "><i class="fa fa-angle-left"></i></a>
+						</div>
+					</div>
+					<div class="col-xs-6">
+						<a th:href="@{/mshop/fav/list}" href="/mshop/templates/user/favorite.html" class="col-xs-12 itb all-good">全部宝贝</a>
+					</div>
+					<div class="col-xs-3">
+						<a th:href="@{/mshop/cart/list}" href="/mshop/templates/cart.html" class="col-xs-12 itb mycat"><i class="fa fa-shopping-cart "></i>
+							<div class="goodsnumber col-xs-7" id="cartItemCount">19</div>
+						</a>
+					</div>
+				</div>
+				<input type="hidden" id="category" name="category" value="" />
+				<input type="hidden" id="startIndex" name="startIndex" value="0" />
+				<input type="hidden" id="fetchSize" name="fetchSize" value="5" />
+			</header>
+			<!--  头部 -->
+			<div class="content  favorite container-fluid">
+				<!--   收藏列表 -->
+				<div class="row favorite-list " th:each="item:${favorite}">
+					<input type="hidden" id="price" th:value="${item.price}" />
+					<input type="hidden" id="isLogin" th:value="${isLogin}" />
+					<ul class="col-xs-12">
+						<li class="col-xs-12">
+							<a class="col-xs-3 show-img" th:href="${'/mshop/goods/info/'+item.catalog}" href="/mshop/templates/goods/info.html">
+								<img th:attr="src=${item.imgUrl}" src="../../static/images/ad1.jpg">
+							</a>
+							<div class="col-xs-9 right-div">
+								<div class="show-title" th:text="${item.name}">商品标题</div>
+								<div class="it-p">
+									<div class="" th:text="${#numbers.formatDecimal(item.price,1,2)}">￥120</div>
+									<div class="row">
+										<div class="col-xs-6 add-cart" name="addCartButton" th:attr="value=${item.catalog}">加入购物车</div>
+										<div class="col-xs-5 delete-goods" name="delFavsButton" th:attr="value=${item.catalog}">删除收藏<i class="fa fa-trash-o"></i>
+										</div>
+									</div>
+								</div>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<!-- 底部菜单 -->
+			<div class="footer">
+				<nav class="nav-justified btn-group-justified">
+					<a th:href="@{/mshop/index}" href="../index.html" class="afc-default btn">
+						<div class="show-nav"><i class="fa fa-home"></i></div>
+						<div class="show-p">首页</div>
+					</a>
+					<a th:href="@{/mshop/goods/category}" href="../goods/category.html" class="btn afc-default ">
+						<div class="show-nav"> <i class="fa fa-bars"></i> </div>
+						<div class="show-p">分类</div>
+					</a>
+					<a th:href="@{/mshop/cart/list}" href="../cart.html" class="btn afc-default">
+						<div class="show-nav"><i class="fa fa-shopping-cart"></i></div>
+						<div class="show-p">购物车</div>
+					</a>
+					<a th:href="@{/mshop/user/home}" href="../user/home.html" class="btn afc-active">
+						<div class="show-nav"><i class="fa fa-user-o "></i></div>
+						<div class="show-p">我</div>
+					</a>
+				</nav>
+			</div>
+		</div>
+
+		<!--<script type="text/javascript" src="/wshop/static/js/jquery.min.js"></script>-->
+		<script type="text/javascript" src="../../static/js/min.js"></script>
+		<!--/*日期拾取*/-->
+		<!--<script type="text/javascript" src="/wshop/static/js/mui.min.js"></script>
+		<script type="text/javascript" src="/wshop/static/js/mui.picker.min.js"></script>
+		<script type="text/javascript" src="/wshop/static/js/mui.dtpicker.min.js"></script>
+		<script type="text/javascript" src="/wshop/static/js/mui.poppicker.min.js"></script>
+
+		<script type="text/javascript" th:src="@{/webjars/crypto-js/3.1.5/core.js}"></script>
+		<script type="text/javascript" th:src="@{/webjars/crypto-js/3.1.5/sha1.js}"></script>
+		<script type="text/javascript" src="/wshop/static/js/view/user.setting.js"></script>
+
+		<script type="text/javascript" src="/wshop/static/js/view/goods.info.js"></script>-->
+
+		<script type="text/javascript">
+			$('.menu .item').tab();
+			$('.ui.dropdown').dropdown();
+			$(function() {#
+				("")
+			})
+		</script>
+	</body>
+
+</html>
